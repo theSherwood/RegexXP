@@ -10,9 +10,22 @@ router.get('/google',
   passport.authenticate('google', { scope: ['profile'] }));
 
 router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }), // Change redirect route?
+  passport.authenticate('google', { failureRedirect: '/' }), // Change redirect route?
   (req, res) => {
-    res.redirect('/'); // Change redirect route?
+    res.redirect('/dashboard'); // Change redirect route?
   });
+
+router.get('/verify', (req, res) => {
+  if (req.user) {
+    console.log(req.user);
+  } else {
+    console.log('Not Auth');
+  }
+});
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
 
 module.exports = router;
