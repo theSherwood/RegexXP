@@ -1,0 +1,32 @@
+<nav class='grey darken-4'>
+  <div class="container">
+    <div class="nav-wrapper">
+      <a href="/" class="brand-logo center">RegExXP</a>
+      <a href="#" data-target="main-menu" class="button-collapse sidenav-trigger show-on-large"><i class="fa fa-bars"></i></a>
+      <!-- RIGHT NAV -->
+      <ul class="right hide-on-small-only">
+        {{#if user}}
+        <li><a href="/dashboard">Welcome {{user.firstName}}</a></li>
+        <li><a href="/auth/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+        {{else}}
+        <li><a href="/stories"><i class="fa-book fa"></i> Public Stories</a></li>
+        {{/if}}
+      </ul>
+      <!-- SIDE MENU -->
+      <ul class="sidenav" id="main-menu">
+        {{#unless user}}
+        <li>
+          <a href="/auth/google" class="btn red darken-1"><i class="fa fa-google left"></i> Login With Google</a>
+        </li>
+        {{/unless}}
+        <li><a href="/stories"><i class="fa-book fa"></i> Public Stories</a></li>
+        {{#if user}}
+        <li class="divider"></li>
+        <li><a href="/dashboard"><i class="fa-cog fa"></i> Dashboard</a></li>
+        <li><a href="/stories/my"><i class="fa-user fa"></i> My Stories</a></li>
+        <li><a href="/auth/logout"><i class="fa-sign-out fa"></i> Logout</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </div>
+</nav>
