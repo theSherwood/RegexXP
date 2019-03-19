@@ -3,12 +3,14 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser');
 
 // Load Models
 require('./models/User');
 
 // Load Routes
 const auth = require('./routes/auth');
+const index = require('./routes/index');
 
 // Config Environment Vars
 require('dotenv').config();
@@ -25,10 +27,6 @@ mongoose.connect(process.env.MONGO_URI, {
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Index');
-});
-
 // Express session Middleware
 app.use(session({
   secret: 'secret',
@@ -39,6 +37,10 @@ app.use(session({
 // Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Body-parser Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Set Global Vars
 app.use((req, res, next) => {
@@ -51,6 +53,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 // Use Routes
+app.use('/', index);
 app.use('/auth', auth);
 
 const port = process.env.PORT || 5000;
