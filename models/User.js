@@ -4,20 +4,26 @@ const Schema = mongoose.Schema;
 // Create Schema
 const UserSchema = new Schema({
   googleID: {
-    type: String,
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  firstName: {
     type: String
   },
-  lastName: {
+  githubId: {
+    type: String
+  },
+  displayName: {
+    type: String
+  },
+  email: {
+    type: String
+  },
+  password: {
     type: String
   },
   image: {
     type: String
+  },
+  date: {
+    type: Date,
+    default: Date.now
   }
 });
 
