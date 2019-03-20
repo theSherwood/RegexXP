@@ -8,7 +8,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
     integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  <link href="https://cdn.jsdelivr.net/npm/highlight-within-textarea@2.0.5/jquery.highlight-within-textarea.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/highlight-within-textarea@2.0.5/jquery.highlight-within-textarea.min.css"
+    rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
   <title>RegexXp</title>
 </head>
 
@@ -20,37 +22,60 @@
   </div>
 
 
-
+  <script src="https://cdn.jsdelivr.net/npm/sanitize-html@1.20.0/dist/sanitize-html.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/highlight-within-textarea@2.0.5/jquery.highlight-within-textarea.min.js"></script>
   <script>
     $(document).ready(() => {
-      console.log($('#regexInput'));
+      $('.puzzleTarget').each((index, element) => {
+        element.innerHTML = element.dataset.content;
+      });
 
-      function applyRegex(regexInput) {
-        const splitRegex = regexInput.split('/');
-        if(!splitRegex || !splitRegex[1] || splitRegex[1] === '') {
-          return;
+      function getRegexFromInput(input) {
+        const splitRegex = input.split('/');
+        let regex;
+        if (!splitRegex || !splitRegex[1] || splitRegex[1] === '') {
+          regex = '';
+        } else {
+          regex = new RegExp(splitRegex[1], splitRegex[2]);
         }
+        return regex;
+      }
+
+      function applyRegexToTester(regexInput) {
+        const regex = getRegexFromInput(regexInput);
         $('#regexTarget').highlightWithinTextarea({
           highlight: [
             {
-              highlight: new RegExp(splitRegex[1], splitRegex[2]),
+              highlight: regex,
               className: 'red'
             }
           ]
         })
       };
-
       let thread = null;
-
       $('#regexInput').keyup(function () {
         clearTimeout(thread);
         var $this = $(this);
         thread = setTimeout(function () {
-          applyRegex($this.val())
+          applyRegexToTester($this.val())
+        }, 100);
+      });
+
+      function applyRegexToPuzzle(puzzleInput) {
+        const regex = getRegexFromInput(puzzleInput);
+        const $puzzleTarget = $('.puzzleTarget');
+        let text = $puzzleTarget[0].dataset.content;
+        text = text.replace(regex, '<span style="background-color: lightgrey">$&</span>');
+        $('.puzzleTarget').html(text);
+      }
+      $('.puzzleInput').keyup(function () {
+        clearTimeout(thread);
+        var $this = $(this);
+        thread = setTimeout(function () {
+          applyRegexToPuzzle($this.val())
         }, 100);
       });
     });
