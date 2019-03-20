@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
@@ -11,6 +12,7 @@ require('./models/User');
 // Load Routes
 const auth = require('./routes/auth');
 const index = require('./routes/index');
+const puzzle = require('./routes/puzzle');
 
 // Config Environment Vars
 require('dotenv').config();
@@ -55,6 +57,10 @@ app.set('view engine', 'handlebars');
 // Use Routes
 app.use('/', index);
 app.use('/auth', auth);
+app.use('/puzzle', puzzle);
+
+// Set Static Folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 const port = process.env.PORT || 5000;
 
