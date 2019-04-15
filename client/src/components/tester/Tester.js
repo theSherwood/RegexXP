@@ -1,26 +1,31 @@
 import React, { useState } from "react";
+import sanitizeHTML from "sanitize-html";
+import rangy from "rangy";
 
 export default function Tester() {
   const [regex, setRegex] = useState("");
   const [targetText, setTargetText] = useState("");
+  // const [textareaHeight, setTextareaHeight] = useState('100px')
+
+  const onRegexChange = e => {
+    setRegex();
+  };
 
   const onTargetChange = e => {
     const backdrop = document.getElementById("targetTextBackdrop");
-    const text = e.target.textContent;
-    const input = document.getElementById("targetTextInput");
-    const selection = window.getSelection();
-    const caretOffset = selection.anchorOffset;
-    input.innerHTML = "";
-    input.textContent = text + "\n" + text;
+    const text = sanitizeHTML(e.target.value);
+    backdrop.innerHTML = `<span style="background-color: yellow;">${text}<span>`;
 
-    const range = document.createRange();
-    range.setStart(input.childNodes[0], caretOffset);
-    range.collapse(true);
-
-    selection.removeAllRanges();
-    selection.addRange(range);
     setTargetText(text);
-    backdrop.innerHTML = `<mark>${text}<mark>`;
+    resizeTextArea();
+  };
+
+  const resizeTextArea = () => {
+    const backdrop = document.getElementById("targetTextBackdrop");
+    const textarea = document.getElementById("targetTextArea");
+    textarea.style.height = backdrop.offsetHeight + "px";
+    console.log("backdrop", backdrop.offsetHeight);
+    console.log("textarea", textarea.offsetHeight);
   };
 
   return (
@@ -35,6 +40,7 @@ export default function Tester() {
                 name="regexInput"
                 placeholder="Enter regex here..."
                 spellCheck="false"
+                onChange={onRegexChange}
               />
             </div>
 
@@ -59,69 +65,40 @@ export default function Tester() {
                     position: "relative"
                   }}
                 >
-                  {" "}
                   <div
                     id="targetTextBackdrop"
                     spellCheck="false"
                     style={{
                       padding: ".5rem 1rem",
+                      paddingBottom: "60px",
                       boxSizing: "border-box",
                       border: "solid green 1px",
                       width: "100%",
-                      height: "100%",
-                      position: "absolute",
+                      position: "relative",
                       top: "-2px",
                       whiteSpace: "pre-wrap",
                       wordWrap: "break-word"
                     }}
                   />
-                  <div
-                    contentEditable="true"
-                    // name="targetTextInput"
-                    onInput={onTargetChange}
-                    // onChange={onTargetChange}
-                    // value={targetText}
-                    id="targetTextInput"
+                  <textarea
+                    name="targetTextArea"
+                    onChange={onTargetChange}
+                    value={targetText}
+                    id="targetTextArea"
                     spellCheck="false"
                     style={{
                       padding: ".5rem 1rem",
                       boxSizing: "border-box",
-                      // position: "absolute",
-                      position: "relative",
+                      position: "absolute",
                       border: "solid red 1px",
                       width: "100%",
-                      minHeight: "100px",
-                      height: "100%",
                       resize: "none",
                       top: "-2px",
                       backgroundColor: "transparent",
                       overflowY: "hidden",
-                      zIndex: "1000",
-                      whiteSpace: "pre-wrap",
-                      wordWrap: "break-word"
-                    }}
-                  />
-                  {/* <textarea
-                    // contentEditable="true"
-                    name="targetTextInput"
-                    onChange={onTargetChange}
-                    value={targetText}
-                    className="targetTextInput"
-                    style={{
-                      // padding: ".5rem 1rem",
-                      boxSizing: "border-box",
-                      // position: "absolute",
-                      position: "relative",
-                      border: "solid red 1px",
-                      width: "100%",
-                      height: "auto",
-                      resize: "none",
-                      // top: "-2px",
-                      backgroundColor: "transparent",
-                      overflowY: "hidden",
                       zIndex: "1000"
                     }}
-                  /> */}
+                  />
                 </div>
               </div>
             </div>
