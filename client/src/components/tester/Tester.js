@@ -2,18 +2,13 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import sanitizeHTML from "sanitize-html";
 import processString from "../../helpers/processString";
 import rangy from "rangy";
+import { NONAME } from "dns";
 
 export default function Tester() {
   const [errors, setErrors] = useState({});
   const [stableRegex, setStableRegex] = useState(["", ""]);
   const [rawRegex, setRawRegex] = useState("");
   const [targetText, setTargetText] = useState("");
-
-  // useEffect(() => {
-  //   return () => {
-  //     resizeTextArea();
-  //   };
-  // }, [targetText]);
 
   const onRegexChange = e => {
     setRawRegex(e.target.value);
@@ -49,12 +44,22 @@ export default function Tester() {
     {
       regex: new RegExp(stableRegex[0], stableRegex[1]),
       fn: (key, match) => (
-        <span key={key} style={{ backgroundColor: "lightgrey" }}>
+        <span
+          key={key}
+          style={{
+            backgroundColor: "rgba(100,100,100,.5)",
+            border: "solid 1px white",
+            marginLeft: "-1px",
+            marginRight: "-1px"
+          }}
+        >
           {match}
         </span>
       )
     }
   ])(targetText);
+
+  console.log("backdropContent", backdropContent);
 
   return (
     <div className="container">
@@ -73,6 +78,7 @@ export default function Tester() {
                 spellCheck="false"
                 onChange={onRegexChange}
                 value={rawRegex}
+                style={{ fontFamily: "monospace" }}
               />
             </div>
 
@@ -86,7 +92,7 @@ export default function Tester() {
                   borderRadius: ".3rem",
                   boxSizing: "border-box",
                   border: "solid black 2px",
-                  height: "150px"
+                  height: "200px"
                 }}
               >
                 <div
@@ -101,12 +107,13 @@ export default function Tester() {
                     id="targetTextBackdrop"
                     spellCheck="false"
                     style={{
-                      fontSize: "1.25rem",
+                      fontFamily: "monospace",
+                      fontSize: "20px",
                       lineHeight: "1.5",
                       padding: ".5rem 1rem",
-                      paddingBottom: "60px",
+                      paddingBottom: "80px",
+                      border: "none",
                       boxSizing: "border-box",
-                      border: "solid green 1px",
                       width: "100%",
                       position: "relative",
                       top: "-2px",
@@ -122,13 +129,15 @@ export default function Tester() {
                     value={targetText}
                     id="targetTextArea"
                     spellCheck="false"
+                    placeholder="Enter target text..."
                     style={{
-                      fontSize: "1.25rem",
+                      fontFamily: "monospace",
+                      fontSize: "20px",
                       lineHeight: "1.5",
                       padding: ".5rem 1rem",
                       boxSizing: "border-box",
                       position: "absolute",
-                      border: "solid red 1px",
+                      border: "none",
                       width: "100%",
                       resize: "none",
                       top: "-2px",
