@@ -24,6 +24,7 @@ export default function Tester() {
       setErrors({});
     } catch (err) {
       setErrors({ regexError: err.toString() });
+      setStableRegex(["", ""]);
     }
   };
 
