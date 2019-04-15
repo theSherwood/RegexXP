@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import sanitizeHTML from "sanitize-html";
 import processString from "../../helpers/processString";
-import rangy from "rangy";
-import { NONAME } from "dns";
+// import rangy from "rangy";
 
 export default function Tester() {
   const [errors, setErrors] = useState({});
@@ -48,18 +47,28 @@ export default function Tester() {
           key={key}
           style={{
             backgroundColor: "rgba(100,100,100,.5)",
-            border: "solid 1px white",
-            marginLeft: "-1px",
-            marginRight: "-1px"
+            position: "relative"
           }}
         >
+          <span
+            style={{
+              position: "absolute",
+              top: "0px",
+              right: "0px",
+              height: "100%",
+              width: "100%",
+              boxSizing: "border-box",
+              borderLeft: "solid 1px white",
+              borderRight: "solid 1px white"
+            }}
+          />
           {match}
         </span>
       )
     }
   ])(targetText);
 
-  console.log("backdropContent", backdropContent);
+  console.log(errors.regexError);
 
   return (
     <div className="container">
@@ -108,7 +117,7 @@ export default function Tester() {
                     spellCheck="false"
                     style={{
                       fontFamily: "monospace",
-                      fontSize: "20px",
+                      fontSize: "1.25rem",
                       lineHeight: "1.5",
                       padding: ".5rem 1rem",
                       paddingBottom: "80px",
@@ -118,7 +127,8 @@ export default function Tester() {
                       position: "relative",
                       top: "-2px",
                       whiteSpace: "pre-wrap",
-                      wordWrap: "break-word"
+                      wordWrap: "break-word",
+                      wordBreak: "break-all"
                     }}
                   >
                     {backdropContent}
@@ -132,7 +142,7 @@ export default function Tester() {
                     placeholder="Enter target text..."
                     style={{
                       fontFamily: "monospace",
-                      fontSize: "20px",
+                      fontSize: "1.25rem",
                       lineHeight: "1.5",
                       padding: ".5rem 1rem",
                       boxSizing: "border-box",
@@ -143,6 +153,9 @@ export default function Tester() {
                       top: "-2px",
                       backgroundColor: "transparent",
                       overflowY: "hidden",
+                      whiteSpace: "pre-wrap",
+                      wordWrap: "break-word",
+                      wordBreak: "break-all",
                       zIndex: "1000"
                     }}
                   />
