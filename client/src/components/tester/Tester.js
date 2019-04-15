@@ -3,13 +3,26 @@ import sanitizeHTML from "sanitize-html";
 import rangy from "rangy";
 
 export default function Tester() {
-  const [regex, setRegex] = useState("");
+  const [regex, setRegex] = useState(new RegExp());
   const [targetText, setTargetText] = useState("");
   // const [textareaHeight, setTextareaHeight] = useState('100px')
 
   const onRegexChange = e => {
-    setRegex();
+    setRegex(getRegexFromInput(e.target.value));
   };
+
+  const getRegexFromInput = input => {
+    const splitRegex = input.split("/");
+    let regex;
+    if (!splitRegex || !splitRegex[1] || splitRegex[1] === "") {
+      regex = "";
+    } else {
+      regex = new RegExp(splitRegex[1], splitRegex[2]);
+    }
+    return regex;
+  };
+
+  const applyRegex = () => {};
 
   const onTargetChange = e => {
     const backdrop = document.getElementById("targetTextBackdrop");
@@ -54,14 +67,14 @@ export default function Tester() {
                   borderRadius: ".3rem",
                   boxSizing: "border-box",
                   border: "solid black 2px",
-                  height: "250px"
+                  height: "150px"
                 }}
               >
                 <div
                   id="targetTextGroup"
                   style={{
                     width: "100%",
-                    minHeight: "200px",
+                    minHeight: "100px",
                     position: "relative"
                   }}
                 >
