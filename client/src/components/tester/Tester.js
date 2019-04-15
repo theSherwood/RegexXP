@@ -1,34 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import sanitizeHTML from "sanitize-html";
+import processString from "../../helpers/processString";
 import rangy from "rangy";
 
 export default function Tester() {
-  const [regex, setRegex] = useState(new RegExp());
+  const [errors, setErrors] = useState({});
+  const [stableRegex, setStableRegex] = useState(["", ""]);
+  const [rawRegex, setRawRegex] = useState("");
   const [targetText, setTargetText] = useState("");
-  // const [textareaHeight, setTextareaHeight] = useState('100px')
+
+  // useEffect(() => {
+  //   return () => {
+  //     resizeTextArea();
+  //   };
+  // }, [targetText]);
 
   const onRegexChange = e => {
-    setRegex(getRegexFromInput(e.target.value));
-  };
-
-  const getRegexFromInput = input => {
-    const splitRegex = input.split("/");
-    let regex;
-    if (!splitRegex || !splitRegex[1] || splitRegex[1] === "") {
-      regex = "";
-    } else {
-      regex = new RegExp(splitRegex[1], splitRegex[2]);
+    setRawRegex(e.target.value);
+    let input = e.target.value.trim();
+    input = input[0] === "/" ? input.slice(1) : input; // remove whitespace and first '/'
+    const finalSlashInd = input.lastIndexOf("/"); // split at last '/'
+    const newRegex = [
+      input.slice(0, finalSlashInd),
+      input.slice(finalSlashInd + 1)
+    ];
+    try {
+      new RegExp(newRegex[0], newRegex[1]);
+      setStableRegex(newRegex);
+      setErrors({});
+    } catch (err) {
+      setErrors({ regexError: err.toString() });
     }
-    return regex;
   };
-
-  const applyRegex = () => {};
 
   const onTargetChange = e => {
-    const backdrop = document.getElementById("targetTextBackdrop");
-    const text = sanitizeHTML(e.target.value);
-    backdrop.innerHTML = `<span style="background-color: yellow;">${text}<span>`;
-
+    let text = sanitizeHTML(e.target.value);
     setTargetText(text);
     resizeTextArea();
   };
@@ -37,9 +43,18 @@ export default function Tester() {
     const backdrop = document.getElementById("targetTextBackdrop");
     const textarea = document.getElementById("targetTextArea");
     textarea.style.height = backdrop.offsetHeight + "px";
-    console.log("backdrop", backdrop.offsetHeight);
-    console.log("textarea", textarea.offsetHeight);
   };
+
+  const backdropContent = processString([
+    {
+      regex: new RegExp(stableRegex[0], stableRegex[1]),
+      fn: (key, match) => (
+        <span key={key} style={{ backgroundColor: "lightgrey" }}>
+          {match}
+        </span>
+      )
+    }
+  ])(targetText);
 
   return (
     <div className="container">
@@ -49,11 +64,15 @@ export default function Tester() {
           <form>
             <div className="form-group">
               <input
-                className="form-control form-control-lg"
+                className={
+                  "form-control form-control-lg " +
+                  (errors.regexError ? "is-invalid" : "")
+                }
                 name="regexInput"
                 placeholder="Enter regex here..."
                 spellCheck="false"
                 onChange={onRegexChange}
+                value={rawRegex}
               />
             </div>
 
@@ -62,8 +81,8 @@ export default function Tester() {
                 className=""
                 style={{
                   overflowY: "auto",
-                  // fontSize: "1.25rem",
-                  // lineHeight: "1.5",
+                  fontSize: "1.25rem",
+                  lineHeight: "1.5",
                   borderRadius: ".3rem",
                   boxSizing: "border-box",
                   border: "solid black 2px",
@@ -82,6 +101,8 @@ export default function Tester() {
                     id="targetTextBackdrop"
                     spellCheck="false"
                     style={{
+                      fontSize: "1.25rem",
+                      lineHeight: "1.5",
                       padding: ".5rem 1rem",
                       paddingBottom: "60px",
                       boxSizing: "border-box",
@@ -92,7 +113,9 @@ export default function Tester() {
                       whiteSpace: "pre-wrap",
                       wordWrap: "break-word"
                     }}
-                  />
+                  >
+                    {backdropContent}
+                  </div>
                   <textarea
                     name="targetTextArea"
                     onChange={onTargetChange}
@@ -100,6 +123,8 @@ export default function Tester() {
                     id="targetTextArea"
                     spellCheck="false"
                     style={{
+                      fontSize: "1.25rem",
+                      lineHeight: "1.5",
                       padding: ".5rem 1rem",
                       boxSizing: "border-box",
                       position: "absolute",
