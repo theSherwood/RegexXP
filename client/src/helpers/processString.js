@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 function processString(options) {
   // debugger;
   let key = 0;
+  const outputs = [];
 
   function processInputWithRegex(option, input) {
     if (!option.fn || typeof option.fn !== "function") return input;
@@ -20,25 +21,32 @@ function processString(options) {
     let regex = option.regex;
     let result = null;
     let output = [];
+    let index = 0;
 
     if ((result = input.match(regex)) !== null) {
       if (result.length > input.length) return input;
       if (result.join("") === "") {
         return input;
       } else {
-        let strRemains = input;
         result.forEach(match => {
-          regex.lastIndex = 0;
-          const singleResult = regex.exec(strRemains);
-          if (!singleResult) return;
-          output.push(strRemains.slice(0, singleResult.index));
-          strRemains = strRemains.slice(singleResult.index + match.length);
-          output.push(option.fn(++key, match));
+          const singleResult = regex.exec(input);
+          output.push(...input.slice(index, singleResult.index).split(""));
+          index = singleResult.index + match.length;
+          output.push(
+            ...input
+              .slice(singleResult.index, index)
+              .split("")
+              .map(value => [value, singleResult.index])
+          );
         });
-        output.push(strRemains);
+        output.push(...input.slice(index).split(""));
       }
+      // console.log("output:", output);
+      outputs.push(output);
+      return;
     } else {
-      return input;
+      outputs.push(input.split(""));
+      return;
     }
 
     /*
@@ -67,7 +75,7 @@ function processString(options) {
     // }
     /* End of modified section */
 
-    return output;
+    // return output;
   }
 
   function collateOutput(options, outputs, input) {
@@ -82,10 +90,11 @@ function processString(options) {
     If the input letter is not in a regex selection, the outputs[i][j] value will
     be a character rather than an array.
     */
-
+    if (outputs.length === 0) return input;
+    console.log("outputs", outputs);
     function addSelected(endIndex) {
       const slice = input.slice(selectionStartIndex, endIndex);
-      finalResult.push(options.fn(++key, slice));
+      finalResult.push(options[0].fn(++key, slice));
     }
 
     function addUnselected(endIndex) {
@@ -100,9 +109,10 @@ function processString(options) {
     for (let i = 0; i < outputs[0].length; i++) {
       let lowestThisRow = 10000;
       for (let j = 0; j < outputs.length; j++) {
-        if (rowSelected || Array.isArray(outputs[i][j])) {
+        // console.log(outputs, j);
+        if (rowSelected || Array.isArray(outputs[j][i])) {
           rowSelected = true;
-          lowestThisRow = Math.min(selectionStartIndex, outputs[i][j][1]);
+          lowestThisRow = Math.min(selectionStartIndex, outputs[j][i][1]);
         }
       }
       if (rowSelected === false || lowestThisRow >= i) {
@@ -123,6 +133,7 @@ function processString(options) {
     } else {
       addUnselected();
     }
+    console.log(finalResult);
     return finalResult;
   }
 
@@ -131,13 +142,13 @@ function processString(options) {
       // Modified
       return input;
 
-    let regexIndex = 0;
-    const outputs = [];
-    options.forEach(option => (input = processInputWithRegex(option, input)));
+    // options.forEach(option => (input = processInputWithRegex(option, input)));
+    options.forEach(option => processInputWithRegex(option, input));
+    // console.log("outputs:", outputs);
     return collateOutput(options, outputs, input);
 
-    return input;
+    // return input;
   };
 }
 
-module.exports = processString;
+export default processString;
