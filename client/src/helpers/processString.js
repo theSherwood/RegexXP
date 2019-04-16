@@ -15,7 +15,7 @@ function processString(options) {
 
   function processInputWithRegex(regexFilter, input) {
     if (!regexFilter || !(regexFilter instanceof RegExp)) {
-      outputs.push(...input.split(""));
+      outputs.push(input.split(""));
       return;
     }
 
@@ -26,11 +26,11 @@ function processString(options) {
 
     if ((result = input.match(regex)) !== null) {
       if (result.length > input.length) {
-        outputs.push(...input.split(""));
+        outputs.push(input.split(""));
         return;
       }
       if (result.join("") === "") {
-        outputs.push(...input.split(""));
+        outputs.push(input.split(""));
         return;
       } else {
         result.forEach(match => {
@@ -46,7 +46,6 @@ function processString(options) {
         });
         output.push(...input.slice(index).split(""));
       }
-      // console.log("output:", output);
       outputs.push(output);
       return;
     } else {
@@ -68,13 +67,14 @@ function processString(options) {
     be a character rather than an array.
     */
     if (outputs.length === 0) return input;
-    // debugger;
     function addSelected(endIndex) {
+      // if (selectionStartIndex === endIndex && endIndex === 0) return;
       const slice = input.slice(selectionStartIndex, endIndex);
       finalResult.push(options.fn(++key, slice));
     }
 
     function addUnselected(endIndex) {
+      // if (selectionEndIndex === endIndex && endIndex === 0) return;
       const slice = input.slice(selectionEndIndex, endIndex);
       finalResult.push(slice);
     }
@@ -86,10 +86,11 @@ function processString(options) {
       let lowestThisRow = 10000;
       let rowSelected = false;
       for (let j = 0; j < outputs.length; j++) {
-        // console.log(outputs, j);
         if (rowSelected || Array.isArray(outputs[j][i])) {
           rowSelected = true;
-          lowestThisRow = Math.min(lowestThisRow, outputs[j][i][1]);
+          lowestThisRow = isNaN(Math.min(lowestThisRow, outputs[j][i][1]))
+            ? lowestThisRow
+            : Math.min(lowestThisRow, outputs[j][i][1]);
         }
       }
       if (rowSelected === false) {
@@ -121,7 +122,6 @@ function processString(options) {
     } else {
       addUnselected();
     }
-    console.log("finalResult", finalResult);
     return finalResult;
   }
 
@@ -140,7 +140,6 @@ function processString(options) {
     options.regexes.forEach(regexFilter =>
       processInputWithRegex(regexFilter, input)
     );
-    // console.log("outputs:", outputs);
     return collateOutput(options, outputs, input);
   };
 }
