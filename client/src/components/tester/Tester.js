@@ -40,34 +40,35 @@ export default function Tester() {
     textarea.style.height = backdrop.offsetHeight + "px";
   };
 
-  const backdropContent = processString([
-    {
-      regex: new RegExp(stableRegex[0], stableRegex[1]),
-      fn: (key, match) => (
+  const backdropContent = processString({
+    regexes: [
+      new RegExp(stableRegex[0], stableRegex[1]),
+      new RegExp("j", "gi")
+    ],
+    fn: (key, match) => (
+      <span
+        key={key}
+        style={{
+          backgroundColor: "rgba(100,100,100,.5)",
+          position: "relative"
+        }}
+      >
         <span
-          key={key}
           style={{
-            backgroundColor: "rgba(100,100,100,.5)",
-            position: "relative"
+            position: "absolute",
+            top: "0px",
+            right: "0px",
+            height: "100%",
+            width: "100%",
+            boxSizing: "border-box",
+            borderLeft: "solid 1px white",
+            borderRight: "solid 1px white"
           }}
-        >
-          <span
-            style={{
-              position: "absolute",
-              top: "0px",
-              right: "0px",
-              height: "100%",
-              width: "100%",
-              boxSizing: "border-box",
-              borderLeft: "solid 1px white",
-              borderRight: "solid 1px white"
-            }}
-          />
-          {match}
-        </span>
-      )
-    }
-  ])(targetText);
+        />
+        {match}
+      </span>
+    )
+  })(targetText);
 
   console.log(errors.regexError);
 

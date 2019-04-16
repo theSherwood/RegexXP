@@ -13,20 +13,25 @@ function processString(options) {
   let key = 0;
   const outputs = [];
 
-  function processInputWithRegex(option, input) {
-    if (!option.fn || typeof option.fn !== "function") return input;
+  function processInputWithRegex(regexFilter, input) {
+    if (!regexFilter || !(regexFilter instanceof RegExp)) {
+      outputs.push(...input.split(""));
+      return;
+    }
 
-    if (!option.regex || !(option.regex instanceof RegExp)) return input;
-
-    let regex = option.regex;
+    let regex = regexFilter;
     let result = null;
     let output = [];
     let index = 0;
 
     if ((result = input.match(regex)) !== null) {
-      if (result.length > input.length) return input;
+      if (result.length > input.length) {
+        outputs.push(...input.split(""));
+        return;
+      }
       if (result.join("") === "") {
-        return input;
+        outputs.push(...input.split(""));
+        return;
       } else {
         result.forEach(match => {
           const singleResult = regex.exec(input);
@@ -66,7 +71,7 @@ function processString(options) {
     // debugger;
     function addSelected(endIndex) {
       const slice = input.slice(selectionStartIndex, endIndex);
-      finalResult.push(options[0].fn(++key, slice));
+      finalResult.push(options.fn(++key, slice));
     }
 
     function addUnselected(endIndex) {
@@ -121,16 +126,22 @@ function processString(options) {
   }
 
   return function(input) {
-    if (!options || !Array.isArray(options) || !options.length || !input)
-      // Modified
+    if (
+      !options ||
+      !options.fn ||
+      typeof options.fn !== "function" ||
+      !options.regexes ||
+      !Array.isArray(options.regexes) ||
+      !options.regexes.length ||
+      !input
+    )
       return input;
 
-    // options.forEach(option => (input = processInputWithRegex(option, input)));
-    options.forEach(option => processInputWithRegex(option, input));
+    options.regexes.forEach(regexFilter =>
+      processInputWithRegex(regexFilter, input)
+    );
     // console.log("outputs:", outputs);
     return collateOutput(options, outputs, input);
-
-    // return input;
   };
 }
 
