@@ -48,34 +48,6 @@ function processString(options) {
       outputs.push(input.split(""));
       return;
     }
-
-    /*
-      Beginning of modifaction of original efog code
-      */
-    // if ((result = input.match(regex)) !== null) {
-    //   if (result.length > input.length)
-    //     // need to throw an error
-    //     return input;
-    //   if (result.join("") === "") {
-    //     return input;
-    //   } else {
-    //     let strRemains = input;
-    //     result.forEach((match, i) => {
-    //       regex.lastIndex = 0;
-    //       const singleResult = regex.exec(strRemains);
-    //       if (!singleResult) return;
-    //       output.push(strRemains.slice(0, singleResult.index));
-    //       strRemains = strRemains.slice(singleResult.index + match.length);
-    //       output.push(option.fn(++key, match));
-    //     });
-    //     output.push(strRemains);
-    //   }
-    // } else {
-    //   return input;
-    // }
-    /* End of modified section */
-
-    // return output;
   }
 
   function collateOutput(options, outputs, input) {
@@ -91,7 +63,7 @@ function processString(options) {
     be a character rather than an array.
     */
     if (outputs.length === 0) return input;
-    console.log("outputs", outputs);
+    // debugger;
     function addSelected(endIndex) {
       const slice = input.slice(selectionStartIndex, endIndex);
       finalResult.push(options[0].fn(++key, slice));
@@ -105,21 +77,32 @@ function processString(options) {
     let finalResult = [];
     let selectionStartIndex = 10000;
     let selectionEndIndex = 0;
-    let rowSelected = false;
     for (let i = 0; i < outputs[0].length; i++) {
       let lowestThisRow = 10000;
+      let rowSelected = false;
       for (let j = 0; j < outputs.length; j++) {
         // console.log(outputs, j);
         if (rowSelected || Array.isArray(outputs[j][i])) {
           rowSelected = true;
-          lowestThisRow = Math.min(selectionStartIndex, outputs[j][i][1]);
+          lowestThisRow = Math.min(lowestThisRow, outputs[j][i][1]);
         }
       }
-      if (rowSelected === false || lowestThisRow >= i) {
-        // Add selected section to finalResult with react elements
-        addSelected(i);
+      if (rowSelected === false) {
+        if (selectionStartIndex < i) {
+          // Add selected section to finalResult with react elements
+          addSelected(i);
+          selectionEndIndex = i;
+        }
         selectionStartIndex = 10000;
-        selectionEndIndex = rowSelected === false ? i : i + 1;
+      } else if (lowestThisRow >= i) {
+        if (selectionStartIndex < i) {
+          // Add selected section to finalResult with react elements
+          addSelected(i);
+          selectionEndIndex = i + 1;
+        } else {
+          addUnselected(i);
+        }
+        selectionStartIndex = lowestThisRow;
       } else {
         if (lowestThisRow < selectionStartIndex) {
           // Add non-selected section to the finalResult
@@ -128,12 +111,12 @@ function processString(options) {
         selectionStartIndex = Math.min(lowestThisRow, selectionStartIndex);
       }
     }
-    if (selectionStartIndex > selectionEndIndex) {
+    if (selectionStartIndex < outputs[0].length) {
       addSelected();
     } else {
       addUnselected();
     }
-    console.log(finalResult);
+    console.log("finalResult", finalResult);
     return finalResult;
   }
 
