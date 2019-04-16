@@ -17,38 +17,113 @@ function processString(options) {
 
     if (!option.regex || !(option.regex instanceof RegExp)) return input;
 
-    if (typeof input === "string") {
-      let regex = option.regex;
-      let result = null;
-      let output = [];
+    let regex = option.regex;
+    let result = null;
+    let output = [];
 
-      /*
+    if ((result = input.match(regex)) !== null) {
+      if (result.length > input.length) return input;
+      if (result.join("") === "") {
+        return input;
+      } else {
+        let strRemains = input;
+        result.forEach(match => {
+          regex.lastIndex = 0;
+          const singleResult = regex.exec(strRemains);
+          if (!singleResult) return;
+          output.push(strRemains.slice(0, singleResult.index));
+          strRemains = strRemains.slice(singleResult.index + match.length);
+          output.push(option.fn(++key, match));
+        });
+        output.push(strRemains);
+      }
+    } else {
+      return input;
+    }
+
+    /*
       Beginning of modifaction of original efog code
       */
-      if ((result = input.match(regex)) !== null) {
-        if (result.join("") === "") {
-          return input;
-        } else {
-          let strRemains = input;
-          result.forEach((match, i) => {
-            regex.lastIndex = 0;
-            const singleResult = regex.exec(strRemains);
-            if (!singleResult) return;
-            output.push(strRemains.slice(0, singleResult.index));
-            strRemains = strRemains.slice(singleResult.index + match.length);
-            output.push(option.fn(++key, match));
-          });
-          output.push(strRemains);
-        }
-      } else {
-        return input;
-      }
-      /* End of modified section */
+    // if ((result = input.match(regex)) !== null) {
+    //   if (result.length > input.length)
+    //     // need to throw an error
+    //     return input;
+    //   if (result.join("") === "") {
+    //     return input;
+    //   } else {
+    //     let strRemains = input;
+    //     result.forEach((match, i) => {
+    //       regex.lastIndex = 0;
+    //       const singleResult = regex.exec(strRemains);
+    //       if (!singleResult) return;
+    //       output.push(strRemains.slice(0, singleResult.index));
+    //       strRemains = strRemains.slice(singleResult.index + match.length);
+    //       output.push(option.fn(++key, match));
+    //     });
+    //     output.push(strRemains);
+    //   }
+    // } else {
+    //   return input;
+    // }
+    /* End of modified section */
 
-      return output;
-    } else if (Array.isArray(input)) {
-      return input.map(chunk => processInputWithRegex(option, chunk));
-    } else return input;
+    return output;
+  }
+
+  function collateOutput(options, outputs, input) {
+    /* 
+    outputs are a 3d array:
+    1d. Length of the original input string
+    2d. Width of the number of regex filters
+    3d. Depth of at most 2;
+      * outputs[i][j][0]: The input letter
+      * outputs[i][j][1]: The start of the current regex selection (in 1d)
+    
+    If the input letter is not in a regex selection, the outputs[i][j] value will
+    be a character rather than an array.
+    */
+
+    function addSelected(endIndex) {
+      const slice = input.slice(selectionStartIndex, endIndex);
+      finalResult.push(options.fn(++key, slice));
+    }
+
+    function addUnselected(endIndex) {
+      const slice = input.slice(selectionEndIndex, endIndex);
+      finalResult.push(slice);
+    }
+
+    let finalResult = [];
+    let selectionStartIndex = 10000;
+    let selectionEndIndex = 0;
+    let rowSelected = false;
+    for (let i = 0; i < outputs[0].length; i++) {
+      let lowestThisRow = 10000;
+      for (let j = 0; j < outputs.length; j++) {
+        if (rowSelected || Array.isArray(outputs[i][j])) {
+          rowSelected = true;
+          lowestThisRow = Math.min(selectionStartIndex, outputs[i][j][1]);
+        }
+      }
+      if (rowSelected === false || lowestThisRow >= i) {
+        // Add selected section to finalResult with react elements
+        addSelected(i);
+        selectionStartIndex = 10000;
+        selectionEndIndex = rowSelected === false ? i : i + 1;
+      } else {
+        if (lowestThisRow < selectionStartIndex) {
+          // Add non-selected section to the finalResult
+          addUnselected(i);
+        }
+        selectionStartIndex = Math.min(lowestThisRow, selectionStartIndex);
+      }
+    }
+    if (selectionStartIndex > selectionEndIndex) {
+      addSelected();
+    } else {
+      addUnselected();
+    }
+    return finalResult;
   }
 
   return function(input) {
@@ -56,7 +131,10 @@ function processString(options) {
       // Modified
       return input;
 
+    let regexIndex = 0;
+    const outputs = [];
     options.forEach(option => (input = processInputWithRegex(option, input)));
+    return collateOutput(options, outputs, input);
 
     return input;
   };
