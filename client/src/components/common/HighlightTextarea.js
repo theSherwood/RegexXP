@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import processString from "../../helpers/processString";
+import m from "../../helpers/merge";
 // import rangy from "rangy";
 
 export default function HighlightTextarea(props) {
@@ -45,16 +46,22 @@ export default function HighlightTextarea(props) {
     )
   })(targetText);
 
+  const textareaStyles = {
+    fontFamily: "monospace",
+    border: "none",
+    boxSizing: "border-box",
+    width: "100%",
+    top: "-2px",
+    whiteSpace: "pre-wrap",
+    wordWrap: "break-word",
+    wordBreak: "break-all"
+  };
+
   return (
     <div
-      className=""
+      className="form-control form-control-lg"
       style={{
         overflowY: "auto",
-        fontSize: "1.25rem",
-        lineHeight: "1.5",
-        borderRadius: ".3rem",
-        boxSizing: "border-box",
-        border: "solid black 2px",
         height: "200px"
       }}
     >
@@ -70,21 +77,10 @@ export default function HighlightTextarea(props) {
           id="targetTextBackdrop"
           spellCheck="false"
           ref={backdropElement}
-          style={{
-            fontFamily: "monospace",
-            fontSize: "1.25rem",
-            lineHeight: "1.5",
-            padding: ".5rem 1rem",
+          style={m(textareaStyles, {
             paddingBottom: "80px",
-            border: "none",
-            boxSizing: "border-box",
-            width: "100%",
-            position: "relative",
-            top: "-2px",
-            whiteSpace: "pre-wrap",
-            wordWrap: "break-word",
-            wordBreak: "break-all"
-          }}
+            position: "relative"
+          })}
         >
           {backdropContent}
         </div>
@@ -96,24 +92,13 @@ export default function HighlightTextarea(props) {
           spellCheck="false"
           placeholder="Enter target text..."
           ref={textareaElement}
-          style={{
-            fontFamily: "monospace",
-            fontSize: "1.25rem",
-            lineHeight: "1.5",
-            padding: ".5rem 1rem",
-            boxSizing: "border-box",
+          style={m(textareaStyles, {
             position: "absolute",
-            border: "none",
-            width: "100%",
             resize: "none",
-            top: "-2px",
             backgroundColor: "transparent",
             overflowY: "hidden",
-            whiteSpace: "pre-wrap",
-            wordWrap: "break-word",
-            wordBreak: "break-all",
             zIndex: "1000"
-          }}
+          })}
         />
       </div>
     </div>
