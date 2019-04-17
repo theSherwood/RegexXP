@@ -6,7 +6,7 @@ import processString from "../../helpers/processString";
 import RegexFilter from "../common/RegexFilter";
 
 export default function Challenge() {
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState(["", ""]);
   const [stableRegexes, setStableRegexes] = useState([["", ""], ["", ""]]); // An array for holding multiple regex
   const [rawRegexes, setRawRegexes] = useState(["", ""]);
   const [targetText, setTargetText] = useState("");
@@ -27,12 +27,20 @@ export default function Challenge() {
       const newStableRegexes = [...stableRegexes];
       newStableRegexes[index] = newRegex;
       setStableRegexes(newStableRegexes);
-      const newErrors = { ...errors };
-      delete newErrors[index];
+      const newErrors = [...errors];
+      newErrors[index] = "";
       setErrors(newErrors);
     } catch (err) {
-      setErrors({ errors, [index]: err.toString() });
+      const newErrors = [...errors];
+      newErrors[index] = err.toString();
+      setErrors(newErrors);
     }
+  };
+
+  const onDeleteClick = (index, e) => {
+    setErrors(errors.filter((error, i) => index !== i));
+    setStableRegexes(stableRegexes.filter((stableRegex, i) => index !== i));
+    setRawRegexes(rawRegexes.filter((rawRegex, i) => index !== i));
   };
 
   const onTargetChange = e => {
@@ -81,6 +89,9 @@ export default function Challenge() {
       error={errors[index]}
       onChange={onRegexesChange.bind(this, index)}
       value={rawRegexes[index]}
+      onDeleteClick={
+        rawRegexes.length > 1 ? onDeleteClick.bind(this, index) : null
+      }
     />
   ));
 
@@ -94,7 +105,7 @@ export default function Challenge() {
           <form>
             {regexFilters}
 
-            <div className="form-group">
+            <div className="form-group mt-3">
               <div
                 className=""
                 style={{
