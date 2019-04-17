@@ -3,6 +3,8 @@ import sanitizeHTML from "sanitize-html";
 import processString from "../../helpers/processString";
 // import rangy from "rangy";
 
+import RegexFilter from "../common/RegexFilter";
+
 export default function Tester() {
   const [errors, setErrors] = useState({});
   const [stableRegex, setStableRegex] = useState(["", ""]);
@@ -31,7 +33,7 @@ export default function Tester() {
   const onTargetChange = e => {
     let text = sanitizeHTML(e.target.value);
     setTargetText(text);
-    resizeTextArea();
+    setTimeout(resizeTextArea, 0);
   };
 
   const resizeTextArea = () => {
@@ -41,10 +43,7 @@ export default function Tester() {
   };
 
   const backdropContent = processString({
-    regexes: [
-      new RegExp(stableRegex[0], stableRegex[1]),
-      new RegExp("j", "gi")
-    ],
+    regexes: [new RegExp(stableRegex[0], stableRegex[1])],
     fn: (key, match) => (
       <span
         key={key}
@@ -70,30 +69,18 @@ export default function Tester() {
     )
   })(targetText);
 
-  console.log(errors.regexError);
-
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-8 m-auto">
           <h1>Tester</h1>
           <form>
-            <div className="form-group">
-              <input
-                className={
-                  "form-control form-control-lg " +
-                  (errors.regexError ? "is-invalid" : "")
-                }
-                name="regexInput"
-                placeholder="Enter regex here..."
-                spellCheck="false"
-                onChange={onRegexChange}
-                value={rawRegex}
-                style={{ fontFamily: "monospace" }}
-              />
-            </div>
-
-            <div className="form-group">
+            <RegexFilter
+              error={errors.regexError}
+              onChange={onRegexChange}
+              value={rawRegex}
+            />
+            <div className="form-group mt-3">
               <div
                 className=""
                 style={{
