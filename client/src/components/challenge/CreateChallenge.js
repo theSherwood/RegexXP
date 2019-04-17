@@ -3,14 +3,18 @@ import sanitizeHTML from "sanitize-html";
 import processString from "../../helpers/processString";
 // import rangy from "rangy";
 
+import RegexFilter from "../common/RegexFilter";
+
 export default function Challenge() {
   const [errors, setErrors] = useState({});
-  const [stableRegex, setStableRegex] = useState([["", ""]]); // An array for holding multiple regex
-  const [rawRegex, setRawRegex] = useState("");
+  const [stableRegexes, setStableRegexes] = useState([["", ""], ["", ""]]); // An array for holding multiple regex
+  const [rawRegexes, setRawRegexes] = useState(["", ""]);
   const [targetText, setTargetText] = useState("");
 
-  const onRegexChange = e => {
-    setRawRegex(e.target.value);
+  const onRegexesChange = (index, e) => {
+    const newRawRegexes = [...rawRegexes];
+    newRawRegexes[index] = e.target.value;
+    setRawRegexes(newRawRegexes);
     let input = e.target.value.trim();
     input = input[0] === "/" ? input.slice(1) : input; // remove whitespace and first '/'
     const finalSlashInd = input.lastIndexOf("/"); // split at last '/'
@@ -20,10 +24,14 @@ export default function Challenge() {
     ];
     try {
       new RegExp(newRegex[0], newRegex[1]);
-      setStableRegex(newRegex);
-      setErrors({});
+      const newStableRegexes = [...stableRegexes];
+      newStableRegexes[index] = newRegex;
+      setStableRegexes(newStableRegexes);
+      const newErrors = { ...errors };
+      delete newErrors[index];
+      setErrors(newErrors);
     } catch (err) {
-      setErrors({ regexError: err.toString() });
+      setErrors({ errors, [index]: err.toString() });
     }
   };
 
@@ -39,34 +47,42 @@ export default function Challenge() {
     textarea.style.height = backdrop.offsetHeight + "px";
   };
 
-  const backdropContent = processString([
-    {
-      regex: new RegExp(stableRegex[0], stableRegex[1]),
-      fn: (key, match) => (
+  const backdropContent = processString({
+    regexes: stableRegexes.map(regex => new RegExp(regex[0], regex[1])),
+    fn: (key, match) => (
+      <span
+        key={key}
+        style={{
+          backgroundColor: "rgba(100,100,100,.5)",
+          position: "relative"
+        }}
+      >
         <span
-          key={key}
           style={{
-            backgroundColor: "rgba(100,100,100,.5)",
-            position: "relative"
+            position: "absolute",
+            top: "0px",
+            right: "0px",
+            height: "100%",
+            width: "100%",
+            boxSizing: "border-box",
+            borderLeft: "solid 1px white",
+            borderRight: "solid 1px white"
           }}
-        >
-          <span
-            style={{
-              position: "absolute",
-              top: "0px",
-              right: "0px",
-              height: "100%",
-              width: "100%",
-              boxSizing: "border-box",
-              borderLeft: "solid 1px white",
-              borderRight: "solid 1px white"
-            }}
-          />
-          {match}
-        </span>
-      )
-    }
-  ])(targetText);
+        />
+        {match}
+      </span>
+    )
+  })(targetText);
+
+  const regexFilters = stableRegexes.map((refexFilter, index) => (
+    <RegexFilter
+      key={index}
+      index={index}
+      error={errors[index]}
+      onChange={onRegexesChange.bind(this, index)}
+      value={rawRegexes[index]}
+    />
+  ));
 
   console.log(errors.regexError);
 
@@ -76,20 +92,7 @@ export default function Challenge() {
         <div className="col-md-8 m-auto">
           <h1>Create Challenge</h1>
           <form>
-            <div className="form-group">
-              <input
-                className={
-                  "form-control form-control-lg " +
-                  (errors.regexError ? "is-invalid" : "")
-                }
-                name="regexInput"
-                placeholder="Enter regex here..."
-                spellCheck="false"
-                onChange={onRegexChange}
-                value={rawRegex}
-                style={{ fontFamily: "monospace" }}
-              />
-            </div>
+            {regexFilters}
 
             <div className="form-group">
               <div
