@@ -6,9 +6,9 @@ import processString from "../../helpers/processString";
 import RegexFilter from "../common/RegexFilter";
 
 export default function Challenge() {
-  const [errors, setErrors] = useState(["", ""]);
-  const [stableRegexes, setStableRegexes] = useState([["", ""], ["", ""]]); // An array for holding multiple regex
-  const [rawRegexes, setRawRegexes] = useState(["", ""]);
+  const [errors, setErrors] = useState([""]);
+  const [stableRegexes, setStableRegexes] = useState([["", ""]]); // An array for holding multiple regex
+  const [rawRegexes, setRawRegexes] = useState([""]);
   const [targetText, setTargetText] = useState("");
 
   const onRegexesChange = (index, e) => {
@@ -43,10 +43,16 @@ export default function Challenge() {
     setRawRegexes(rawRegexes.filter((rawRegex, i) => index !== i));
   };
 
+  const onAddClick = e => {
+    setErrors([...errors, ""]);
+    setStableRegexes([...stableRegexes, ["", ""]]);
+    setRawRegexes([...rawRegexes, ""]);
+  };
+
   const onTargetChange = e => {
     let text = sanitizeHTML(e.target.value);
     setTargetText(text);
-    resizeTextArea();
+    setTimeout(resizeTextArea, 0);
   };
 
   const resizeTextArea = () => {
@@ -81,6 +87,7 @@ export default function Challenge() {
       </span>
     )
   })(targetText);
+  console.log("stableRegexes", stableRegexes);
 
   const regexFilters = stableRegexes.map((refexFilter, index) => (
     <RegexFilter
@@ -95,89 +102,91 @@ export default function Challenge() {
     />
   ));
 
-  console.log(errors.regexError);
-
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-8 m-auto">
-          <h1>Create Challenge</h1>
-          <form>
-            {regexFilters}
-
-            <div className="form-group mt-3">
+    <div className="row">
+      <div className="col-lg-8 m-auto">
+        <h1>Create Challenge</h1>
+        <form>
+          {regexFilters}
+          <button
+            type="button"
+            className="btn btn-small btn-block btn-secondary btn-sm mt-2"
+            onClick={onAddClick}
+          >
+            Add another regex
+          </button>
+          <div className="form-group mt-3">
+            <div
+              className=""
+              style={{
+                overflowY: "auto",
+                fontSize: "1.25rem",
+                lineHeight: "1.5",
+                borderRadius: ".3rem",
+                boxSizing: "border-box",
+                border: "solid black 2px",
+                height: "200px"
+              }}
+            >
               <div
-                className=""
+                id="targetTextGroup"
                 style={{
-                  overflowY: "auto",
-                  fontSize: "1.25rem",
-                  lineHeight: "1.5",
-                  borderRadius: ".3rem",
-                  boxSizing: "border-box",
-                  border: "solid black 2px",
-                  height: "200px"
+                  width: "100%",
+                  minHeight: "100px",
+                  position: "relative"
                 }}
               >
                 <div
-                  id="targetTextGroup"
+                  id="targetTextBackdrop"
+                  spellCheck="false"
                   style={{
+                    fontFamily: "monospace",
+                    fontSize: "1.25rem",
+                    lineHeight: "1.5",
+                    padding: ".5rem 1rem",
+                    paddingBottom: "80px",
+                    border: "none",
+                    boxSizing: "border-box",
                     width: "100%",
-                    minHeight: "100px",
-                    position: "relative"
+                    position: "relative",
+                    top: "-2px",
+                    whiteSpace: "pre-wrap",
+                    wordWrap: "break-word",
+                    wordBreak: "break-all"
                   }}
                 >
-                  <div
-                    id="targetTextBackdrop"
-                    spellCheck="false"
-                    style={{
-                      fontFamily: "monospace",
-                      fontSize: "1.25rem",
-                      lineHeight: "1.5",
-                      padding: ".5rem 1rem",
-                      paddingBottom: "80px",
-                      border: "none",
-                      boxSizing: "border-box",
-                      width: "100%",
-                      position: "relative",
-                      top: "-2px",
-                      whiteSpace: "pre-wrap",
-                      wordWrap: "break-word",
-                      wordBreak: "break-all"
-                    }}
-                  >
-                    {backdropContent}
-                  </div>
-                  <textarea
-                    name="targetTextArea"
-                    onChange={onTargetChange}
-                    value={targetText}
-                    id="targetTextArea"
-                    spellCheck="false"
-                    placeholder="Enter target text..."
-                    style={{
-                      fontFamily: "monospace",
-                      fontSize: "1.25rem",
-                      lineHeight: "1.5",
-                      padding: ".5rem 1rem",
-                      boxSizing: "border-box",
-                      position: "absolute",
-                      border: "none",
-                      width: "100%",
-                      resize: "none",
-                      top: "-2px",
-                      backgroundColor: "transparent",
-                      overflowY: "hidden",
-                      whiteSpace: "pre-wrap",
-                      wordWrap: "break-word",
-                      wordBreak: "break-all",
-                      zIndex: "1000"
-                    }}
-                  />
+                  {backdropContent}
                 </div>
+                <textarea
+                  name="targetTextArea"
+                  onChange={onTargetChange}
+                  value={targetText}
+                  id="targetTextArea"
+                  spellCheck="false"
+                  placeholder="Enter target text..."
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "1.25rem",
+                    lineHeight: "1.5",
+                    padding: ".5rem 1rem",
+                    boxSizing: "border-box",
+                    position: "absolute",
+                    border: "none",
+                    width: "100%",
+                    resize: "none",
+                    top: "-2px",
+                    backgroundColor: "transparent",
+                    overflowY: "hidden",
+                    whiteSpace: "pre-wrap",
+                    wordWrap: "break-word",
+                    wordBreak: "break-all",
+                    zIndex: "1000"
+                  }}
+                />
               </div>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );
