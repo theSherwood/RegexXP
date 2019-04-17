@@ -1,9 +1,12 @@
 import React from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav
+      className="navbar navbar-expand-lg navbar-dark bg-dark"
+      style={{ flex: "0 0 auto" }}
+    >
       <button
         className="navbar-toggler"
         type="button"
@@ -21,14 +24,14 @@ export default function Header() {
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav">
           <li className="nav-item active">
-            <a className="nav-link" href="/">
+            <Link className="nav-link" to="/">
               Home <span className="sr-only">(current)</span>
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/">
-              Features
-            </a>
+            <Link className="nav-link" to="/create-challenge">
+              Create Challenge
+            </Link>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/">
