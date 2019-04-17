@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState } from "react";
 import sanitizeHTML from "sanitize-html";
-import processString from "../../helpers/processString";
-// import rangy from "rangy";
 
 import RegexFilter from "../common/RegexFilter";
+import HighlightTextarea from "../common/HighlightTextarea";
 
 export default function Challenge() {
   const [errors, setErrors] = useState([""]);
   const [stableRegexes, setStableRegexes] = useState([["", ""]]); // An array for holding multiple regex
   const [rawRegexes, setRawRegexes] = useState([""]);
   const [targetText, setTargetText] = useState("");
-
-  const [backdropElement] = useState(React.createRef());
-  const [textareaElement] = useState(React.createRef());
 
   const onRegexesChange = (index, e) => {
     const newRawRegexes = [...rawRegexes];
@@ -55,41 +51,7 @@ export default function Challenge() {
   const onTargetChange = e => {
     let text = sanitizeHTML(e.target.value);
     setTargetText(text);
-    setTimeout(resizeTextArea, 0);
   };
-
-  const resizeTextArea = () => {
-    textareaElement.current.style.height =
-      backdropElement.current.offsetHeight + "px";
-  };
-
-  const backdropContent = processString({
-    regexes: stableRegexes.map(regex => new RegExp(regex[0], regex[1])),
-    fn: (key, match) => (
-      <span
-        key={key}
-        style={{
-          backgroundColor: "rgba(100,100,100,.5)",
-          position: "relative"
-        }}
-      >
-        <span
-          style={{
-            position: "absolute",
-            top: "0px",
-            right: "0px",
-            height: "100%",
-            width: "100%",
-            boxSizing: "border-box",
-            borderLeft: "solid 1px white",
-            borderRight: "solid 1px white"
-          }}
-        />
-        {match}
-      </span>
-    )
-  })(targetText);
-  console.log("stableRegexes", stableRegexes);
 
   const regexFilters = stableRegexes.map((refexFilter, index) => (
     <RegexFilter
@@ -118,77 +80,11 @@ export default function Challenge() {
             Add another regex
           </button>
           <div className="form-group mt-3">
-            <div
-              className=""
-              style={{
-                overflowY: "auto",
-                fontSize: "1.25rem",
-                lineHeight: "1.5",
-                borderRadius: ".3rem",
-                boxSizing: "border-box",
-                border: "solid black 2px",
-                height: "200px"
-              }}
-            >
-              <div
-                id="targetTextGroup"
-                style={{
-                  width: "100%",
-                  minHeight: "100px",
-                  position: "relative"
-                }}
-              >
-                <div
-                  id="targetTextBackdrop"
-                  spellCheck="false"
-                  ref={backdropElement}
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "1.25rem",
-                    lineHeight: "1.5",
-                    padding: ".5rem 1rem",
-                    paddingBottom: "80px",
-                    border: "none",
-                    boxSizing: "border-box",
-                    width: "100%",
-                    position: "relative",
-                    top: "-2px",
-                    whiteSpace: "pre-wrap",
-                    wordWrap: "break-word",
-                    wordBreak: "break-all"
-                  }}
-                >
-                  {backdropContent}
-                </div>
-                <textarea
-                  name="targetTextArea"
-                  onChange={onTargetChange}
-                  value={targetText}
-                  id="targetTextArea"
-                  spellCheck="false"
-                  placeholder="Enter target text..."
-                  ref={textareaElement}
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "1.25rem",
-                    lineHeight: "1.5",
-                    padding: ".5rem 1rem",
-                    boxSizing: "border-box",
-                    position: "absolute",
-                    border: "none",
-                    width: "100%",
-                    resize: "none",
-                    top: "-2px",
-                    backgroundColor: "transparent",
-                    overflowY: "hidden",
-                    whiteSpace: "pre-wrap",
-                    wordWrap: "break-word",
-                    wordBreak: "break-all",
-                    zIndex: "1000"
-                  }}
-                />
-              </div>
-            </div>
+            <HighlightTextarea
+              regexFilters={stableRegexes}
+              targetText={targetText}
+              onTargetChange={onTargetChange}
+            />
           </div>
         </form>
       </div>
