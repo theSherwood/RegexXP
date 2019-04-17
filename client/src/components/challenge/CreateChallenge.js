@@ -11,6 +11,9 @@ export default function Challenge() {
   const [rawRegexes, setRawRegexes] = useState([""]);
   const [targetText, setTargetText] = useState("");
 
+  const [backdropElement] = useState(React.createRef());
+  const [textareaElement] = useState(React.createRef());
+
   const onRegexesChange = (index, e) => {
     const newRawRegexes = [...rawRegexes];
     newRawRegexes[index] = e.target.value;
@@ -56,9 +59,8 @@ export default function Challenge() {
   };
 
   const resizeTextArea = () => {
-    const backdrop = document.getElementById("targetTextBackdrop");
-    const textarea = document.getElementById("targetTextArea");
-    textarea.style.height = backdrop.offsetHeight + "px";
+    textareaElement.current.style.height =
+      backdropElement.current.offsetHeight + "px";
   };
 
   const backdropContent = processString({
@@ -139,6 +141,7 @@ export default function Challenge() {
                 <div
                   id="targetTextBackdrop"
                   spellCheck="false"
+                  ref={backdropElement}
                   style={{
                     fontFamily: "monospace",
                     fontSize: "1.25rem",
@@ -164,6 +167,7 @@ export default function Challenge() {
                   id="targetTextArea"
                   spellCheck="false"
                   placeholder="Enter target text..."
+                  ref={textareaElement}
                   style={{
                     fontFamily: "monospace",
                     fontSize: "1.25rem",
