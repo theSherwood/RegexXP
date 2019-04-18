@@ -27,31 +27,10 @@ const ChallengeSchema = new Schema({
   },
   solutions: [
     {
-      regex: {
-        type: String
-      },
-      length: {
-        type: Number
-      },
-      description: {
-        type: String
-      },
-      user: {
+      solution: {
         type: Schema.Types.ObjectId,
-        ref: "users"
-      },
-      date: {
-        type: Date,
-        default: Date.now
-      },
-      comments: [
-        {
-          comment: {
-            type: Schema.Types.ObjectId,
-            ref: "comments"
-          }
-        }
-      ]
+        ref: "solutions"
+      }
     }
   ],
   comments: [
