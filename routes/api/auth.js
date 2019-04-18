@@ -93,8 +93,8 @@ router.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { id, name, email } = req.user;
-    res.json({ id, name, email });
+    const { id, handle, email } = req.user;
+    res.json({ id, handle, email });
   }
 );
 
