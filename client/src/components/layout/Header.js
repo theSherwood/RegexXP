@@ -1,7 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-export default function Header() {
+function Header(props) {
+  const { user } = props;
   return (
     <nav
       className="navbar navbar-expand-lg navbar-dark bg-dark"
@@ -18,9 +21,6 @@ export default function Header() {
       >
         <span className="navbar-toggler-icon" />
       </button>
-      <a className="navbar-brand" href="/">
-        Navbar
-      </a>
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav">
           <li className="nav-item active">
@@ -29,11 +29,30 @@ export default function Header() {
             </Link>
           </li>
           <li className="nav-item">
+            <Link className="nav-link" to="/challenges">
+              Challenges
+            </Link>
+          </li>
+          <li className="nav-item">
             <Link className="nav-link" to="/create-challenge">
               Create Challenge
             </Link>
           </li>
-          <li className="nav-item">
+          {user ? null : (
+            <Fragment>
+              <li className="nav-item">
+                <Link className="nav-link" to="/register">
+                  Register
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              </li>
+            </Fragment>
+          )}
+          {/* <li className="nav-item">
             <a className="nav-link" href="/">
               Pricing
             </a>
@@ -64,9 +83,22 @@ export default function Header() {
                 Something else here
               </a>
             </div>
-          </li>
+          </li> */}
         </ul>
       </div>
+      <Link className="navbar-brand" to="/">
+        RegexXP
+      </Link>
     </nav>
   );
 }
+
+Header.propTypes = {
+  user: PropTypes.object
+};
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps)(Header);
