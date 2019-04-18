@@ -9,12 +9,8 @@ const bodyParser = require("body-parser");
 require("./models/User");
 
 // Load Routes
-// const auth = require("./routes/auth");
-// const index = require('./routes/index');
-// const puzzle = require('./routes/puzzle');
 const auth = require("./routes/api/auth");
-// const index = require("./routes/index");
-// const puzzle = require("./routes/api/challenges");
+const challenges = require("./routes/api/challenges");
 
 // Config Environment Vars
 if (process.env.NODE_ENV !== "production") {
@@ -52,10 +48,8 @@ app.use(passport.session());
 require("./config/passport")(passport);
 
 // Use Routes
-// app.use("/", index);
-// app.use("/auth", auth);
-// app.use("/puzzle", puzzle);
 app.use("/api/auth", auth);
+app.use("/api/challenges", challenges);
 
 const port = process.env.PORT || 5000;
 
