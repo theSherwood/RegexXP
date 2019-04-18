@@ -3,6 +3,8 @@ import processString from "../../helpers/processString";
 import m from "../../helpers/merge";
 // import rangy from "rangy";
 
+import HighlightMark from "./HighlightMark";
+
 export default function HighlightTextarea(props) {
   const { regexFilters, targetText, onTargetChange } = props;
 
@@ -21,28 +23,8 @@ export default function HighlightTextarea(props) {
 
   const backdropContent = processString({
     regexes: regexFilters.map(regex => new RegExp(regex[0], regex[1])),
-    fn: (key, match) => (
-      <span
-        key={key}
-        style={{
-          backgroundColor: "rgba(100,100,100,.5)",
-          position: "relative"
-        }}
-      >
-        <span
-          style={{
-            position: "absolute",
-            top: "0px",
-            right: "0px",
-            height: "100%",
-            width: "100%",
-            boxSizing: "border-box",
-            borderLeft: "solid 1px white",
-            borderRight: "solid 1px white"
-          }}
-        />
-        {match}
-      </span>
+    fn: (key, highlightText) => (
+      <HighlightMark key={key} highlightText={highlightText} />
     )
   })(targetText);
 
