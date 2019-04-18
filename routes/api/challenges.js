@@ -17,6 +17,16 @@ router.get("/test", (req, res) => {
   });
 });
 
+// @route   GET api/challenges
+// @desc    Get challenges
+// @access  Public
+router.get("/", (req, res) => {
+  Challenge.find()
+    .sort(req.body.filterBy || { date: -1 })
+    .then(challenges => res.json(challenges))
+    .catch(err => res.status(404).json(err));
+});
+
 // @route   POST api/challenges
 // @desc    Create challenge
 // @access  Private
