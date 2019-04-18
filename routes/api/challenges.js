@@ -134,6 +134,19 @@ router.get(
   }
 );
 
+// @route   GET api/challenges/solutions/:solution_id
+// @desc    Get a particular solution
+// @access  Private
+router.get(
+  "/solutions/:solution_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Solution.findById(req.params.solution_id)
+      .then(solution => res.json(solution))
+      .catch(err => res.status(404).json(err));
+  }
+);
+
 // @route   Delete api/challenges/solutions/:solution_id
 // @desc    Delete a solution from a challenge
 // @access  Private
