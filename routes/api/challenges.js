@@ -55,8 +55,7 @@ router.post(
       user: req.user.id,
       title: req.body.title,
       description: req.body.description,
-      text: req.body.text,
-      highlight: req.body.highlight
+      highlightTemplate: req.body.highlightTemplate
     });
 
     newChallenge

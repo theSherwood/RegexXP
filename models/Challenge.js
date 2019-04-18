@@ -9,11 +9,7 @@ const ChallengeSchema = new Schema({
   description: {
     type: String
   },
-  text: {
-    type: String,
-    required: true
-  },
-  highlight: {
+  highlightTemplate: {
     type: String,
     required: true
   },
