@@ -27,6 +27,15 @@ router.get("/", (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
+// @route   GET api/challenges/:id
+// @desc    Get a particular challenge by id
+// @access  Public
+router.get("/:id", (req, res) => {
+  Challenge.findById(req.params.id)
+    .then(challenge => res.json(challenge))
+    .catch(err => res.status(404).json(err));
+});
+
 // @route   POST api/challenges
 // @desc    Create challenge
 // @access  Private
