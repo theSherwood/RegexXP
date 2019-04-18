@@ -9,7 +9,7 @@ const ChallengeSchema = new Schema({
   description: {
     type: String
   },
-  targettext: {
+  text: {
     type: String,
     required: true
   },
@@ -24,23 +24,7 @@ const ChallengeSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-  },
-  solutions: [
-    {
-      solution: {
-        type: Schema.Types.ObjectId,
-        ref: "solutions"
-      }
-    }
-  ],
-  comments: [
-    {
-      comment: {
-        type: Schema.Types.ObjectId,
-        ref: "comments"
-      }
-    }
-  ]
+  }
 });
 
 module.exports = Challenge = mongoose.model("challenges", ChallengeSchema);

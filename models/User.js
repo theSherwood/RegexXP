@@ -21,22 +21,6 @@ const UserSchema = new Schema({
   image: {
     type: String
   },
-  comments: [
-    {
-      comment: {
-        type: Schema.Types.ObjectId,
-        ref: "comments"
-      }
-    }
-  ],
-  solutions: [
-    {
-      solution: {
-        type: Schema.Types.ObjectId,
-        ref: "solutions"
-      }
-    }
-  ],
   date: {
     type: Date,
     default: Date.now

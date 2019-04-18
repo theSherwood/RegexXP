@@ -6,8 +6,12 @@ const SolutionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "challenges"
   },
-  regex: {
+  handle: {
     type: String
+  },
+  regex: {
+    type: String,
+    required: true
   },
   length: {
     type: Number
@@ -22,15 +26,7 @@ const SolutionSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-  },
-  comments: [
-    {
-      comment: {
-        type: Schema.Types.ObjectId,
-        ref: "comments"
-      }
-    }
-  ]
+  }
 });
 
 module.exports = Solution = mongoose.model("solutions", SolutionSchema);
