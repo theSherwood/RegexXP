@@ -9,7 +9,7 @@ const UserSchema = new Schema({
   githubId: {
     type: String
   },
-  displayName: {
+  name: {
     type: String
   },
   email: {

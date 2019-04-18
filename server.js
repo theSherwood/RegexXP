@@ -3,27 +3,23 @@ const path = require("path");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
-const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
 
 // Load Models
 require("./models/User");
 
 // Load Routes
-// const auth = require('./routes/auth');
+// const auth = require("./routes/auth");
 // const index = require('./routes/index');
 // const puzzle = require('./routes/puzzle');
 const auth = require("./routes/api/auth");
-const index = require("./routes/index");
-const puzzle = require("./routes/api/challenges");
+// const index = require("./routes/index");
+// const puzzle = require("./routes/api/challenges");
 
 // Config Environment Vars
-if (process.env.NODE_ENV !== production) {
+if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
-
-// Passport Config
-require("./config/passport")(passport);
 
 // Mongoose Connect
 mongoose
@@ -44,18 +40,22 @@ app.use(
   })
 );
 
-// Passport Middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Body-parser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Passport Config
+require("./config/passport")(passport);
+
 // Use Routes
-app.use("/", index);
-app.use("/auth", auth);
-app.use("/puzzle", puzzle);
+// app.use("/", index);
+// app.use("/auth", auth);
+// app.use("/puzzle", puzzle);
+app.use("/api/auth", auth);
 
 const port = process.env.PORT || 5000;
 
