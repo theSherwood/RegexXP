@@ -4,7 +4,10 @@
   "description": "Gain XP with Regex!",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run client\" \"npm run server\""
   },
   "author": "Adam Sherwood",
   "license": "ISC",
