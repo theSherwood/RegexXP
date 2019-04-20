@@ -1,14 +1,49 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { addChallenge } from "../../actions/challengeActions";
+
 import sanitizeHTML from "sanitize-html";
+import processString from "../../helpers/processString";
 
 import RegexFilter from "../common/RegexFilter";
 import HighlightTextarea from "../common/HighlightTextarea";
 
-export default function Challenge() {
+function CreateChallenge(props) {
   const [errors, setErrors] = useState([""]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [stableRegexes, setStableRegexes] = useState([["", ""]]); // An array for holding multiple regex
   const [rawRegexes, setRawRegexes] = useState([""]);
   const [targetText, setTargetText] = useState("");
+
+  const onSubmit = e => {
+    e.preventDefault();
+
+    const highlightTemplate = processString({
+      regexes: stableRegexes.map(regex => new RegExp(regex[0], regex[1])),
+      fn: (key, highlightText) => [highlightText] // This array signifies where a react component should be inserted
+    })(targetText);
+
+    const newChallenge = {
+      user: props.auth.user.id,
+      highlightTemplate: JSON.stringify(highlightTemplate),
+      title,
+      description
+    };
+
+    console.log(newChallenge);
+
+    props.addChallenge(newChallenge);
+  };
+
+  const onChangeTitle = e => {
+    setTitle(e.target.value);
+  };
+
+  const onChangeDescription = e => {
+    setDescription(e.target.value);
+  };
 
   const onRegexesChange = (index, e) => {
     const newRawRegexes = [...rawRegexes];
@@ -70,7 +105,25 @@ export default function Challenge() {
     <div className="row">
       <div className="col-lg-8 m-auto">
         <h1>Create Challenge</h1>
-        <form>
+        <form onSubmit={onSubmit}>
+          <input
+            name="title"
+            className="form-control mb-2"
+            placeholder="Challenge title..."
+            onChange={onChangeTitle}
+            value={title}
+            style={{ fontFamily: "monospace" }}
+          />
+          <textarea
+            name="description"
+            className="form-control"
+            placeholder="Description..."
+            onChange={onChangeDescription}
+            value={description}
+            style={{ fontFamily: "monospace", resize: "none" }}
+          />
+
+          <hr />
           {regexFilters}
           <button
             type="button"
@@ -86,8 +139,25 @@ export default function Challenge() {
               onTargetChange={onTargetChange}
             />
           </div>
+          <button type="submit" className="btn btn-lg btn-warning mt-2">
+            Submit Challenge
+          </button>
         </form>
       </div>
     </div>
   );
 }
+
+CreateChallenge.propTypes = {
+  addChallenge: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { addChallenge }
+)(CreateChallenge);
