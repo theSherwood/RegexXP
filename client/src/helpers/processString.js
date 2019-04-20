@@ -24,7 +24,6 @@ function processString(options) {
     let index = 0;
 
     if ((result = input.match(regex)) !== null) {
-      console.log("result", result);
       if (result.length > input.length) {
         outputs.push(input.split(""));
         return;
@@ -79,7 +78,6 @@ function processString(options) {
       finalResult.push(slice);
     }
 
-    console.log("outputs", outputs);
     let finalResult = [];
     let selectionStartIndex = 10000;
     let selectionEndIndex = 0;
