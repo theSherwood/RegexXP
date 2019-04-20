@@ -60,14 +60,13 @@ router.post("/login", (req, res) => {
 // @access    Public
 router.post("/register", (req, res) => {
   const errors = {};
-
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
       errors.email = "That email is already registered";
       return res.status(400).json(errors);
     } else {
       const newUser = new User({
-        displayName: req.body.displayName,
+        handle: req.body.handle,
         email: req.body.email,
         password: req.body.password
       });
