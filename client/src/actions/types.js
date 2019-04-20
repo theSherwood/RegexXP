@@ -10,3 +10,5 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const GET_ERRORS = "GET_ERRORS";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
+export const SET_USER = "SET_USER";
+export const IS_LOADING = "IS_LOADING";
