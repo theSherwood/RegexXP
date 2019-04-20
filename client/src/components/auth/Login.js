@@ -1,25 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { loginUser } from "../../actions/authActions";
 
-export default function Login() {
+function Login(props) {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+
+  const onChange = e => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const onSubmit = e => {
+    e.preventDefault();
+
+    props.loginUser(formData);
+  };
+
   return (
     <div className="container">
-      <div className="card">
+      <div className="card" style={{ backgroundColor: "#35a7ff" }}>
         <div className="card-content">
-          <div className="row">
-            <form className="col s12" action="/auth/login" method="post">
-              <div className="row">
-                <div className="input-field col s12">
-                  <input name="email" type="email" className="validate" />
-                  <label for="email">Email</label>
-                </div>
+          <div className="container p-4">
+            <form onSubmit={onSubmit}>
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  name="email"
+                  type="email"
+                  className="form-control"
+                  value={formData.email}
+                  onChange={onChange}
+                />
               </div>
-              <div className="row">
-                <div className="input-field col s12">
-                  <input name="password" type="password" className="validate" />
-                  <label for="password">Password</label>
-                </div>
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input
+                  name="password"
+                  type="password"
+                  className="form-control"
+                  value={formData.password}
+                  onChange={onChange}
+                />
               </div>
-              <input type="submit" value="Login" />
+              <button type="submit" className="btn btn-warning mt-2">
+                Login
+              </button>
             </form>
           </div>
         </div>
@@ -27,3 +58,12 @@ export default function Login() {
     </div>
   );
 }
+
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { loginUser }
+)(Login);
