@@ -2,12 +2,17 @@ import {
   ADD_CHALLENGE,
   GET_ERRORS,
   GET_CHALLENGES,
+  GET_CHALLENGE,
   IS_LOADING
 } from "../actions/types";
 
 const initialState = {
   challenges: [],
   challenge: {},
+  solutions: [],
+  solution: {},
+  comments: [],
+  comment: {},
   loading: false
 };
 
@@ -28,6 +33,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         challenges: payload,
+        loading: false
+      };
+    case GET_CHALLENGE:
+      return {
+        ...state,
+        challenge: payload,
         loading: false
       };
     default:
