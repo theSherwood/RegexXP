@@ -2,9 +2,15 @@ import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { logoutUser } from "../../actions/authActions";
 
 function Header(props) {
-  const { user } = props;
+  const { auth } = props;
+
+  const onLogoutClick = e => {
+    console.log("logout clicked!");
+    props.logoutUser();
+  };
   return (
     <nav
       className="navbar navbar-expand-lg navbar-dark bg-dark"
@@ -38,7 +44,13 @@ function Header(props) {
               Create Challenge
             </Link>
           </li>
-          {user ? null : (
+          {auth.isAuthenticated ? (
+            <li className="nav-item">
+              <Link className="nav-link" to="/login" onClick={onLogoutClick}>
+                Logout
+              </Link>
+            </li>
+          ) : (
             <Fragment>
               <li className="nav-item">
                 <Link className="nav-link" to="/register">
@@ -94,11 +106,15 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  user: PropTypes.object
+  auth: PropTypes.object.isRequired,
+  logoutUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  auth: state.auth
 });
 
-export default connect(mapStateToProps)(Header);
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(Header);
