@@ -1,25 +1,39 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Challenge from "./Challenge";
+import ChallengeCard from "./ChallengeCard";
 import { getChallenges } from "../../actions/challengeActions";
 
 function Challenges(props) {
   const { challenges, loading } = props.challenge;
 
   useEffect(() => {
-    console.log("here we are");
     props.getChallenges();
   }, []);
 
+  let challengesContent;
+  if (challenges === null || loading) {
+    challengesContent = (
+      <div class="text-center mt-5">
+        <div
+          class="spinner-border text-warning"
+          role="status"
+          style={{ width: "100px", height: "100px" }}
+        >
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  } else {
+    challengesContent = challenges.map((challenge, index) => (
+      <ChallengeCard key={index} challenge={challenge} />
+    ));
+  }
+
   return (
     <div>
-      {challenges.map((challenge, index) => (
-        <Challenge
-          key={index}
-          highlightTemplate={challenge.highlightTemplate}
-        />
-      ))}
+      <h3>Challenges</h3>
+      {challengesContent}
     </div>
   );
 }
