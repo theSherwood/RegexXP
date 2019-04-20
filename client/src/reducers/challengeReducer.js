@@ -1,4 +1,9 @@
-import { ADD_CHALLENGE, GET_ERRORS } from "../actions/types";
+import {
+  ADD_CHALLENGE,
+  GET_ERRORS,
+  GET_CHALLENGES,
+  IS_LOADING
+} from "../actions/types";
 
 const initialState = {
   challenges: [],
@@ -13,6 +18,17 @@ export default function(state = initialState, action) {
       return {
         ...state,
         challenges: [payload, ...state.challenges]
+      };
+    case IS_LOADING:
+      return {
+        ...state,
+        loading: true
+      };
+    case GET_CHALLENGES:
+      return {
+        ...state,
+        challenges: payload,
+        loading: false
       };
     default:
       return state;
