@@ -13,6 +13,7 @@ import Footer from "./components/layout/Footer";
 import Tester from "./components/tester/Tester";
 import CreateChallenge from "./components/challenge/CreateChallenge";
 import Challenges from "./components/challenge/Challenges";
+import Challenge from "./components/challenge/Challenge";
 
 import "./App.css";
 
@@ -38,6 +39,7 @@ export default function App() {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/challenges" component={Challenges} />
+            <Route exact path="/challenges/:id" component={Challenge} />
             <Route exact path="/create-challenge" component={CreateChallenge} />
           </div>
           <Footer />
