@@ -1,12 +1,15 @@
 import React from "react";
+// import PropTypes from 'prop-types'
 
 export default function HighlightMark(props) {
-  const { highlightText, highlightColor, borderColor } = props;
+  const { highlightText, highlightColor, borderColor, tall } = props;
   return (
     <span
       style={{
         backgroundColor: highlightColor || "rgba(100,100,100,.5)",
-        position: "relative"
+        position: "relative",
+        borderBottom: tall ? "solid 2px " + highlightColor : "",
+        borderTop: tall ? "solid 2px " + highlightColor : ""
       }}
     >
       <span
