@@ -2,12 +2,14 @@ import React, { useEffect, useState, Fragment } from "react";
 import processString from "../../helpers/processString";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import Spinner from "../common/Spinner";
 import HighlightDiv from "../common/HighlightDiv";
 import RegexFilter from "../common/RegexFilter";
-import { Link } from "react-router-dom";
-import { getChallenge } from "../../actions/challengeActions";
+import Thread from "../thread/Thread";
+
+import { getChallenge, addSolution } from "../../actions/challengeActions";
 
 function Challenge(props) {
   const [errors, setErrors] = useState({});
@@ -15,9 +17,10 @@ function Challenge(props) {
   const [rawRegex, setRawRegex] = useState("");
   const [targetText, setTargetText] = useState("");
   const [highlightArray, setHighlightArray] = useState([]);
+  const [completed, setCompleted] = useState(false);
 
   const { challenge, loading } = props.challenge;
-  const { highlightTemplate, description, title, user, _id } = challenge;
+  const { highlightJSON, description, title, user, _id } = challenge;
 
   const onRegexChange = e => {
     setRawRegex(e.target.value);
@@ -43,17 +46,27 @@ function Challenge(props) {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(challenge).length !== 0 && !loading) {
-      const highlightArray = JSON.parse(highlightTemplate);
+    if (
+      Object.keys(challenge).length !== 0 &&
+      !loading &&
+      highlightJSON.length > 0
+    ) {
+      const highlightArray = JSON.parse(highlightJSON);
       setHighlightArray(highlightArray);
       const challengeTextArray = highlightArray.map(text => {
         return Array.isArray(text) ? text[0] : text;
       });
       setTargetText(challengeTextArray.join(""));
     }
-  }, [highlightTemplate]);
+  }, [highlightJSON]);
 
-  function arraysEqual(arr1, arr2) {
+  const onSubmitSolution = e => {
+    e.preventDefault();
+    props.addSolution(_id, { regex: rawRegex });
+    setCompleted(true);
+  };
+
+  const arraysEqual = (arr1, arr2) => {
     if (arr1 === arr2) return true;
     if (arr1 == null || arr2 == null) return false;
     if (arr1.length != arr2.length) return false;
@@ -63,7 +76,7 @@ function Challenge(props) {
       } else if (arr1[i] !== arr2[i]) return false;
     }
     return true;
-  }
+  };
 
   let challengeContent;
   if (Object.keys(challenge).length == 0 || loading) {
@@ -79,23 +92,38 @@ function Challenge(props) {
       attemptArray = [];
     }
 
-    let successStyleCard;
+    let success = false;
     if (attemptArray.length > 0 && arraysEqual(attemptArray, highlightArray)) {
-      // successStyleCard = { boxShadow: "inset 0 0 5px 2px #343a40" };
+      success = true;
     }
 
     challengeContent = (
-      <div className="card mt-2" style={successStyleCard}>
+      <div className="card mt-2">
         <div className="card-content">
           <div className="container p-4" style={{ fontFamily: "monospace" }}>
-            <h4 className="float">{title}</h4>
+            <h4>{title}</h4>
+
             <p className="lead">{user.handle}</p>
             <p className="text-muted">{description}</p>
-            <RegexFilter
-              error={errors.regexError}
-              onChange={onRegexChange}
-              value={rawRegex}
-            />
+            {completed ? (
+              <p className="mt-5">Successfully Completed</p>
+            ) : (
+              <form onSubmit={onSubmitSolution}>
+                <RegexFilter
+                  error={errors.regexError}
+                  onChange={onRegexChange}
+                  value={rawRegex}
+                />
+                {success ? (
+                  <button
+                    className="float-right btn btn-block btn-sm btn-warning mt-2 mb-2"
+                    type="submit"
+                  >
+                    Submit solution
+                  </button>
+                ) : null}
+              </form>
+            )}
           </div>
         </div>
         <div
@@ -111,11 +139,13 @@ function Challenge(props) {
               highlightArray={highlightArray}
               tall={true}
             />
-            <HighlightDiv
-              highlightColor="#ccc"
-              highlightArray={attemptArray}
-              position="absolute"
-            />
+            {completed ? null : (
+              <HighlightDiv
+                highlightColor="#ccc"
+                highlightArray={attemptArray}
+                position="absolute"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -128,15 +158,14 @@ function Challenge(props) {
         Back to challenges
       </Link>
       {challengeContent}
-      <button type="button" className="btn btn-warning btn-sm mt-3">
-        See comments
-      </button>
+      <Thread challengeId={_id} />
     </Fragment>
   );
 }
 
 Challenge.propTypes = {
   getChallenge: PropTypes.func.isRequired,
+  addSolution: PropTypes.func.isRequired,
   challenge: PropTypes.object.isRequired,
   loading: PropTypes.bool
 };
@@ -148,5 +177,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getChallenge }
+  { getChallenge, addSolution }
 )(Challenge);
