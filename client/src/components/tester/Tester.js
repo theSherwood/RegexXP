@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import sanitizeHTML from "sanitize-html";
-// import rangy from "rangy";
 
 import RegexFilter from "../common/RegexFilter";
 import HighlightTextarea from "../common/HighlightTextarea";
@@ -36,25 +35,23 @@ export default function Tester() {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-8 m-auto">
-          <h1>Tester</h1>
-          <form>
-            <RegexFilter
-              error={errors.regexError}
-              onChange={onRegexChange}
-              value={rawRegex}
+    <div className="row">
+      <div className="col-md-8 m-auto">
+        <h3>Tester</h3>
+        <form>
+          <RegexFilter
+            error={errors.regexError}
+            onChange={onRegexChange}
+            value={rawRegex}
+          />
+          <div className="form-group mt-3">
+            <HighlightTextarea
+              regexFilters={[stableRegex]}
+              targetText={targetText}
+              onTargetChange={onTargetChange}
             />
-            <div className="form-group mt-3">
-              <HighlightTextarea
-                regexFilters={[stableRegex]}
-                targetText={targetText}
-                onTargetChange={onTargetChange}
-              />
-            </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );

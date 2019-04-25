@@ -104,7 +104,7 @@ function CreateChallenge(props) {
   return (
     <div className="row">
       <div className="col-lg-8 m-auto">
-        <h1>Create Challenge</h1>
+        <h3>Create Challenge</h3>
         <form onSubmit={onSubmit}>
           <input
             name="title"
@@ -139,7 +139,7 @@ function CreateChallenge(props) {
               onTargetChange={onTargetChange}
             />
           </div>
-          <button type="submit" className="btn btn-lg btn-warning mt-2">
+          <button type="submit" className="btn btn-warning mt-2">
             Submit Challenge
           </button>
         </form>
