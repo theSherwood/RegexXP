@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ChallengeCard from "./ChallengeCard";
+import Spinner from "../common/Spinner";
 import { getChallenges } from "../../actions/challengeActions";
 
 function Challenges(props) {
@@ -14,15 +15,7 @@ function Challenges(props) {
   let challengesContent;
   if (challenges === null || loading) {
     challengesContent = (
-      <div class="text-center mt-5">
-        <div
-          class="spinner-border text-warning"
-          role="status"
-          style={{ width: "100px", height: "100px" }}
-        >
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
+      <Spinner size="40vmin" additionalClasses="text-warning" />
     );
   } else {
     challengesContent = challenges.map((challenge, index) => (
