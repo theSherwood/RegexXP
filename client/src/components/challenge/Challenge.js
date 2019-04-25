@@ -18,6 +18,7 @@ function Challenge(props) {
   const [targetText, setTargetText] = useState("");
   const [highlightArray, setHighlightArray] = useState([]);
   const [completed, setCompleted] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
   const { challenge, loading } = props.challenge;
   const { highlightJSON, description, title, user, _id } = challenge;
@@ -57,6 +58,7 @@ function Challenge(props) {
         return Array.isArray(text) ? text[0] : text;
       });
       setTargetText(challengeTextArray.join(""));
+      setFetching(false);
     }
   }, [highlightJSON]);
 
@@ -79,7 +81,7 @@ function Challenge(props) {
   };
 
   let challengeContent;
-  if (Object.keys(challenge).length == 0 || loading) {
+  if (Object.keys(challenge).length == 0 || (loading && fetching)) {
     challengeContent = (
       <Spinner size="40vmin" additionalClasses="text-warning" />
     );
