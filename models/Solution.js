@@ -16,9 +16,6 @@ const SolutionSchema = new Schema({
   length: {
     type: Number
   },
-  description: {
-    type: String
-  },
   user: {
     type: Schema.Types.ObjectId,
     ref: "users"
