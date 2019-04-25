@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import HighlightDiv from "../common/HighlightDiv";
 
 export default function ChallengeCard(props) {
-  const { highlightTemplate, description, title, user, _id } = props.challenge;
-  const [highlightArray] = useState(JSON.parse(highlightTemplate));
+  const { highlightJSON, description, title, user, _id } = props.challenge;
+  const [highlightArray] = useState(JSON.parse(highlightJSON));
 
   return (
     <div className="card mb-2">

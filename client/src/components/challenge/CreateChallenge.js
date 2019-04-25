@@ -20,14 +20,14 @@ function CreateChallenge(props) {
   const onSubmit = e => {
     e.preventDefault();
 
-    const highlightTemplate = processString({
+    const highlightArray = processString({
       regexes: stableRegexes.map(regex => new RegExp(regex[0], regex[1])),
       fn: (key, highlightText) => [highlightText] // This array signifies where a react component should be inserted
     })(targetText);
 
     const newChallenge = {
       user: props.auth.user.id,
-      highlightTemplate: JSON.stringify(highlightTemplate),
+      highlightJSON: JSON.stringify(highlightArray),
       title,
       description
     };

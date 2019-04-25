@@ -9,7 +9,7 @@ const ChallengeSchema = new Schema({
   description: {
     type: String
   },
-  highlightTemplate: {
+  highlightJSON: {
     type: String,
     required: true
   },
