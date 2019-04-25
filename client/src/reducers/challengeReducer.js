@@ -3,7 +3,10 @@ import {
   GET_ERRORS,
   GET_CHALLENGES,
   GET_CHALLENGE,
-  IS_LOADING
+  IS_LOADING,
+  GET_SOLUTIONS,
+  GET_COMMENTS_TO_C,
+  ADD_SOLUTION
 } from "../actions/types";
 
 const initialState = {
@@ -13,7 +16,8 @@ const initialState = {
   solution: {},
   comments: [],
   comment: {},
-  loading: false
+  loading: false,
+  errors: {}
 };
 
 export default function(state = initialState, action) {
@@ -29,6 +33,12 @@ export default function(state = initialState, action) {
         ...state,
         loading: true
       };
+    case GET_SOLUTIONS:
+      return {
+        ...state,
+        solutions: payload,
+        loading: false
+      };
     case GET_CHALLENGES:
       return {
         ...state,
@@ -40,6 +50,22 @@ export default function(state = initialState, action) {
         ...state,
         challenge: payload,
         loading: false
+      };
+    case GET_COMMENTS_TO_C:
+      return {
+        ...state,
+        comments: payload,
+        loading: false
+      };
+    case ADD_SOLUTION: // This may not be necessary if we redirect on submission
+      return {
+        ...state,
+        solutions: [payload, ...state.solutions]
+      };
+    case GET_ERRORS:
+      return {
+        ...state,
+        errors: payload
       };
     default:
       return state;
