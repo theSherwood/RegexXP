@@ -56,7 +56,7 @@ router.post(
       user: req.user.id,
       title: req.body.title,
       description: req.body.description,
-      highlightTemplate: req.body.highlightTemplate
+      highlightJSON: req.body.highlightJSON
     });
 
     newChallenge
@@ -92,27 +92,28 @@ router.post(
   "/:id/add-solution",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Challenge.findById(req.params.id).then(challenge => {
-      if (challenge) {
-        // Create solution
-        new Solution({
-          challenge: challenge._id,
-          handle: req.user.handle,
-          regex: req.body.regex,
-          length: req.body.regex.length,
-          description: req.body.description,
-          user: req.user.id
-        })
-          .save()
-          .then(solution => {
-            challenge.solutions.push(solution._id);
-
-            // Save
-            challenge.save().then(challenge => res.json(challenge));
+    console.log("route", req.params.id, req.body);
+    Challenge.findById(req.params.id)
+      .then(challenge => {
+        if (challenge) {
+          // Create solution
+          new Solution({
+            challenge: challenge._id,
+            handle: req.user.handle,
+            regex: req.body.regex,
+            length: req.body.regex.length,
+            user: req.user.id
           })
-          .catch(err => res.status(404).json(err));
-      }
-    });
+            .save()
+            .then(solution => res.json(solution))
+            .catch(err => {
+              return res.status(404).json(err);
+            });
+        }
+      })
+      .catch(err => {
+        return res.status(404).json(err);
+      });
   }
 );
 
@@ -236,7 +237,7 @@ router.post(
 );
 
 // @route   GET api/challenges/solutions/:solution_id/comments
-// @desc    Get all comments to a challenge
+// @desc    Get all comments to a solution
 // @access  Private
 router.get(
   "/solutions/:solution_id/comments",
