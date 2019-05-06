@@ -12,10 +12,7 @@ function Header(props) {
     props.logoutUser();
   };
   return (
-    <nav
-      className="navbar navbar-expand-lg navbar-dark bg-dark"
-      style={{ flex: "0 0 auto" }}
-    >
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <button
         className="navbar-toggler"
         type="button"
@@ -27,6 +24,9 @@ function Header(props) {
       >
         <span className="navbar-toggler-icon" />
       </button>
+      <Link className="navbar-brand" to="/">
+        RegexXP
+      </Link>
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav">
           <li className="nav-item active">
@@ -39,17 +39,19 @@ function Header(props) {
               Challenges
             </Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/create-challenge">
-              Create Challenge
-            </Link>
-          </li>
           {auth.isAuthenticated ? (
-            <li className="nav-item">
-              <Link className="nav-link" to="/login" onClick={onLogoutClick}>
-                Logout
-              </Link>
-            </li>
+            <Fragment>
+              <li className="nav-item">
+                <Link className="nav-link" to="/create-challenge">
+                  Create Challenge
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login" onClick={onLogoutClick}>
+                  Logout
+                </Link>
+              </li>
+            </Fragment>
           ) : (
             <Fragment>
               <li className="nav-item">
@@ -66,9 +68,6 @@ function Header(props) {
           )}
         </ul>
       </div>
-      <Link className="navbar-brand" to="/">
-        RegexXP
-      </Link>
     </nav>
   );
 }
