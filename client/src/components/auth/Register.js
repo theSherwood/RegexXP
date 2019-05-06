@@ -47,7 +47,7 @@ function Register(props) {
                 value={handle}
                 onChange={onChange}
               />
-              <div class="invalid-feedback">{errors.handle}</div>
+              <div className="invalid-feedback">{errors.handle}</div>
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
@@ -58,7 +58,7 @@ function Register(props) {
                 value={email}
                 onChange={onChange}
               />
-              <div class="invalid-feedback">{errors.email}</div>
+              <div className="invalid-feedback">{errors.email}</div>
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
@@ -71,7 +71,7 @@ function Register(props) {
                 value={password}
                 onChange={onChange}
               />
-              <div class="invalid-feedback">{errors.password}</div>
+              <div className="invalid-feedback">{errors.password}</div>
             </div>
             <div className="form-group">
               <label htmlFor="password2">Confirm Password</label>
@@ -84,7 +84,7 @@ function Register(props) {
                 value={password2}
                 onChange={onChange}
               />
-              <div class="invalid-feedback">{errors.password2}</div>
+              <div className="invalid-feedback">{errors.password2}</div>
             </div>
             <button type="submit" className="btn btn-warning mt-2">
               Register

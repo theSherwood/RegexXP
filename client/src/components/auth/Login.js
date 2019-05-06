@@ -43,7 +43,7 @@ function Login(props) {
                 value={formData.email}
                 onChange={onChange}
               />
-              <div class="invalid-feedback">{errors.email}</div>
+              <div className="invalid-feedback">{errors.email}</div>
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
@@ -56,7 +56,7 @@ function Login(props) {
                 value={formData.password}
                 onChange={onChange}
               />
-              <div class="invalid-feedback">{errors.password}</div>
+              <div className="invalid-feedback">{errors.password}</div>
             </div>
             <button type="submit" className="btn btn-warning mt-2">
               Login
