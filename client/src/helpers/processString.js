@@ -33,15 +33,17 @@ function processString(options) {
         return;
       } else {
         result.forEach(match => {
-          const singleResult = regex.exec(input);
-          output.push(...input.slice(index, singleResult.index).split(""));
-          index = singleResult.index + match.length;
-          output.push(
-            ...input
-              .slice(singleResult.index, index)
-              .split("")
-              .map(value => [value, singleResult.index])
-          );
+          if (match) {
+            const singleResult = regex.exec(input);
+            output.push(...input.slice(index, singleResult.index).split(""));
+            index = singleResult.index + match.length;
+            output.push(
+              ...input
+                .slice(singleResult.index, index)
+                .split("")
+                .map(value => [value, singleResult.index])
+            );
+          }
         });
         output.push(...input.slice(index).split(""));
       }
