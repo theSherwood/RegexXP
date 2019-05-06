@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { registerUser } from "../../actions/authActions";
+import { registerUser, clearAuthErrors } from "../../actions/authActions";
 
 function Register(props) {
   const [formData, setFormData] = useState({
@@ -10,6 +10,12 @@ function Register(props) {
     password2: "",
     handle: ""
   });
+
+  useEffect(() => {
+    return () => {
+      props.clearAuthErrors();
+    };
+  }, []);
 
   const onChange = e => {
     setFormData({
@@ -20,10 +26,10 @@ function Register(props) {
 
   const onSubmit = e => {
     e.preventDefault();
-
     props.registerUser(formData);
   };
 
+  const { errors } = props;
   const { email, password, password2, handle } = formData;
   return (
     <div className="card">
@@ -35,40 +41,50 @@ function Register(props) {
               <input
                 name="handle"
                 type="text"
-                className="form-control"
+                className={
+                  "form-control" + (errors.handle ? " is-invalid" : "")
+                }
                 value={handle}
                 onChange={onChange}
               />
+              <div class="invalid-feedback">{errors.handle}</div>
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
                 name="email"
                 type="email"
-                className="form-control"
+                className={"form-control" + (errors.email ? " is-invalid" : "")}
                 value={email}
                 onChange={onChange}
               />
+              <div class="invalid-feedback">{errors.email}</div>
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <input
                 name="password"
                 type="password"
-                className="form-control"
+                className={
+                  "form-control" + (errors.password ? " is-invalid" : "")
+                }
                 value={password}
                 onChange={onChange}
               />
+              <div class="invalid-feedback">{errors.password}</div>
             </div>
             <div className="form-group">
               <label htmlFor="password2">Confirm Password</label>
               <input
                 name="password2"
                 type="password"
-                className="form-control"
+                className={
+                  "form-control" + (errors.password2 ? " is-invalid" : "")
+                }
                 value={password2}
                 onChange={onChange}
               />
+              <div class="invalid-feedback">{errors.password2}</div>
             </div>
             <button type="submit" className="btn btn-warning mt-2">
               Register
@@ -81,10 +97,15 @@ function Register(props) {
 }
 
 Register.propTypes = {
-  registerUser: PropTypes.func.isRequired
+  registerUser: PropTypes.func.isRequired,
+  clearAuthErrors: PropTypes.func.isRequired
 };
 
+const mapStateToProps = state => ({
+  errors: state.auth.errors
+});
+
 export default connect(
-  null,
-  { registerUser }
+  mapStateToProps,
+  { registerUser, clearAuthErrors }
 )(Register);

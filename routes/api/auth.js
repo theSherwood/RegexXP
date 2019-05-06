@@ -4,6 +4,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
+// Load Validation
+const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
+
 // Load User Model
 const User = require("../../models/User");
 
@@ -11,7 +15,12 @@ const User = require("../../models/User");
 // @desc      Login for email and password
 // @access    Public
 router.post("/login", (req, res) => {
-  const errors = {};
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  // Check String Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
   const email = req.body.email;
   const password = req.body.password;
@@ -19,8 +28,7 @@ router.post("/login", (req, res) => {
   // Find user
   User.findOne({ email }).then(user => {
     if (!user) {
-      errors.email =
-        "That email/password combination doesn't match our records";
+      errors.email = "That email doesn't match our records";
       return res.status(404).json(errors);
     }
     // Check password
@@ -44,11 +52,8 @@ router.post("/login", (req, res) => {
             });
           }
         );
-
-        // return res.json(payload);
       } else {
-        errors.email =
-          "That email/password combination doesn't match our records";
+        errors.password = "That password doesn't match our records";
         return res.status(404).json(errors);
       }
     });
@@ -59,12 +64,18 @@ router.post("/login", (req, res) => {
 // @desc      Register with email and password
 // @access    Public
 router.post("/register", (req, res) => {
-  const errors = {};
+  const { errors, isValid } = validateRegisterInput(req.body);
+
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
       errors.email = "That email is already registered";
       return res.status(400).json(errors);
     } else {
+      // Check String Validation
+      if (!isValid) {
+        return res.status(400).json(errors);
+      }
+
       const newUser = new User({
         handle: req.body.handle,
         email: req.body.email,
