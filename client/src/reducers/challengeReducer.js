@@ -1,6 +1,7 @@
 import {
   ADD_CHALLENGE,
   GET_ERRORS,
+  CLEAR_ERRORS,
   GET_CHALLENGES,
   GET_CHALLENGE,
   IS_LOADING,
@@ -66,6 +67,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         errors: payload
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        errors: {}
       };
     default:
       return state;

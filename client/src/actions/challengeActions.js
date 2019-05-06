@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   ADD_CHALLENGE,
   GET_ERRORS,
+  CLEAR_ERRORS,
   GET_CHALLENGES,
   GET_CHALLENGE,
   GET_COMMENTS_TO_C,
@@ -129,4 +130,10 @@ export const setLoading = () => {
   return {
     type: IS_LOADING
   };
+};
+
+export const clearErrors = () => dispatch => {
+  dispatch({
+    type: CLEAR_ERRORS
+  });
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import processString from "../../helpers/processString";
 import m from "../../helpers/merge";
 // import rangy from "rangy";
@@ -7,6 +7,7 @@ import HighlightMark from "./HighlightMark";
 
 export default function HighlightTextarea(props) {
   const { regexFilters, targetText, onTargetChange } = props;
+  const errors = props.errors || {};
 
   const [backdropElement] = useState(React.createRef());
   const [textareaElement] = useState(React.createRef());
@@ -40,49 +41,56 @@ export default function HighlightTextarea(props) {
   };
 
   return (
-    <div
-      className="form-control form-control-lg"
-      style={{
-        overflowY: "auto",
-        height: "200px"
-      }}
-    >
+    <Fragment>
       <div
-        id="targetTextGroup"
+        className={
+          "form-control form-control-lg" +
+          (errors.highlights || errors.challenge ? " is-invalid" : "")
+        }
         style={{
-          width: "100%",
-          minHeight: "100px",
-          position: "relative"
+          overflowY: "auto",
+          height: "200px"
         }}
       >
         <div
-          id="targetTextBackdrop"
-          spellCheck="false"
-          ref={backdropElement}
-          style={m(textareaStyles, {
-            paddingBottom: "80px",
+          id="targetTextGroup"
+          style={{
+            width: "100%",
+            minHeight: "100px",
             position: "relative"
-          })}
+          }}
         >
-          {backdropContent}
+          <div
+            id="targetTextBackdrop"
+            spellCheck="false"
+            ref={backdropElement}
+            style={m(textareaStyles, {
+              paddingBottom: "80px",
+              position: "relative"
+            })}
+          >
+            {backdropContent}
+          </div>
+          <textarea
+            name="targetTextArea"
+            onChange={onChange}
+            value={targetText}
+            id="targetTextArea"
+            spellCheck="false"
+            placeholder="Enter target text..."
+            ref={textareaElement}
+            style={m(textareaStyles, {
+              position: "absolute",
+              resize: "none",
+              backgroundColor: "transparent",
+              overflowY: "hidden",
+              zIndex: "1000"
+            })}
+          />
         </div>
-        <textarea
-          name="targetTextArea"
-          onChange={onChange}
-          value={targetText}
-          id="targetTextArea"
-          spellCheck="false"
-          placeholder="Enter target text..."
-          ref={textareaElement}
-          style={m(textareaStyles, {
-            position: "absolute",
-            resize: "none",
-            backgroundColor: "transparent",
-            overflowY: "hidden",
-            zIndex: "1000"
-          })}
-        />
       </div>
-    </div>
+      <div className="invalid-feedback">{errors.highlights}</div>
+      <div className="invalid-feedback">{errors.challenge}</div>
+    </Fragment>
   );
 }

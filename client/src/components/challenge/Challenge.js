@@ -12,7 +12,7 @@ import Thread from "../thread/Thread";
 import { getChallenge, addSolution } from "../../actions/challengeActions";
 
 function Challenge(props) {
-  const [errors, setErrors] = useState({});
+  const [regexError, setRegexError] = useState("");
   const [stableRegex, setStableRegex] = useState(["", ""]);
   const [rawRegex, setRawRegex] = useState("");
   const [targetText, setTargetText] = useState("");
@@ -35,9 +35,9 @@ function Challenge(props) {
     try {
       new RegExp(newRegex[0], newRegex[1]);
       setStableRegex(newRegex);
-      setErrors({});
+      setRegexError("");
     } catch (err) {
-      setErrors({ regexError: err.toString() });
+      setRegexError(err.toString());
       setStableRegex(["", ""]);
     }
   };
@@ -112,7 +112,7 @@ function Challenge(props) {
             ) : (
               <form onSubmit={onSubmitSolution}>
                 <RegexFilter
-                  error={errors.regexError}
+                  error={regexError}
                   onChange={onRegexChange}
                   value={rawRegex}
                 />

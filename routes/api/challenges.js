@@ -3,6 +3,9 @@ const router = express.Router();
 // const jwt = require('jsonwebtoken')
 const passport = require("passport");
 
+// Load Validation
+const validateCreateChallengeInput = require("../../validation/create-challenge");
+
 // Load models
 const Challenge = require("../../models/Challenge");
 const Comment = require("../../models/Comment");
@@ -50,19 +53,24 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const errors = {};
+    const { errors, isValid } = validateCreateChallengeInput(req.body);
 
-    const newChallenge = new Challenge({
-      user: req.user.id,
-      title: req.body.title,
-      description: req.body.description,
-      highlightJSON: req.body.highlightJSON
-    });
-
-    newChallenge
-      .save()
-      .then(challenge => res.json(challenge))
-      .catch(err => res.json(err));
+    // Check String Validation
+    if (!isValid) {
+      return res.status(400).json(errors);
+    } else {
+      const newChallenge = new Challenge({
+        user: req.user.id,
+        title: req.body.title,
+        description: req.body.description,
+        highlightJSON: req.body.highlightJSON
+      });
+      console.log("valid somehow!!!!!!");
+      newChallenge
+        .save()
+        .then(challenge => res.json(challenge))
+        .catch(err => res.json(err));
+    }
   }
 );
 

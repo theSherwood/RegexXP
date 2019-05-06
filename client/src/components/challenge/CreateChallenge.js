@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { addChallenge } from "../../actions/challengeActions";
+import { addChallenge, clearErrors } from "../../actions/challengeActions";
 
 import sanitizeHTML from "sanitize-html";
 import processString from "../../helpers/processString";
@@ -10,12 +10,18 @@ import RegexFilter from "../common/RegexFilter";
 import HighlightTextarea from "../common/HighlightTextarea";
 
 function CreateChallenge(props) {
-  const [errors, setErrors] = useState([""]);
+  const [regexErrors, setRegexErrors] = useState([""]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [stableRegexes, setStableRegexes] = useState([["", ""]]); // An array for holding multiple regex
   const [rawRegexes, setRawRegexes] = useState([""]);
   const [targetText, setTargetText] = useState("");
+
+  useEffect(() => {
+    return () => {
+      props.clearErrors();
+    };
+  }, []);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -61,24 +67,24 @@ function CreateChallenge(props) {
       const newStableRegexes = [...stableRegexes];
       newStableRegexes[index] = newRegex;
       setStableRegexes(newStableRegexes);
-      const newErrors = [...errors];
-      newErrors[index] = "";
-      setErrors(newErrors);
+      const newRegexErrors = [...regexErrors];
+      newRegexErrors[index] = "";
+      setRegexErrors(newRegexErrors);
     } catch (err) {
-      const newErrors = [...errors];
-      newErrors[index] = err.toString();
-      setErrors(newErrors);
+      const newRegexErrors = [...regexErrors];
+      newRegexErrors[index] = err.toString();
+      setRegexErrors(newRegexErrors);
     }
   };
 
   const onDeleteClick = (index, e) => {
-    setErrors(errors.filter((error, i) => index !== i));
+    setRegexErrors(regexErrors.filter((error, i) => index !== i));
     setStableRegexes(stableRegexes.filter((stableRegex, i) => index !== i));
     setRawRegexes(rawRegexes.filter((rawRegex, i) => index !== i));
   };
 
   const onAddClick = e => {
-    setErrors([...errors, ""]);
+    setRegexErrors([...regexErrors, ""]);
     setStableRegexes([...stableRegexes, ["", ""]]);
     setRawRegexes([...rawRegexes, ""]);
   };
@@ -92,7 +98,7 @@ function CreateChallenge(props) {
     <RegexFilter
       key={index}
       index={index}
-      error={errors[index]}
+      error={regexErrors[index]}
       onChange={onRegexesChange.bind(this, index)}
       value={rawRegexes[index]}
       onDeleteClick={
@@ -101,6 +107,7 @@ function CreateChallenge(props) {
     />
   ));
 
+  const { errors } = props;
   return (
     <div className="row">
       <div className="col-lg-8 m-auto">
@@ -108,21 +115,24 @@ function CreateChallenge(props) {
         <form onSubmit={onSubmit}>
           <input
             name="title"
-            className="form-control mb-2"
+            className={"form-control" + (errors.title ? " is-invalid" : "")}
             placeholder="Challenge title..."
             onChange={onChangeTitle}
             value={title}
             style={{ fontFamily: "monospace" }}
           />
+          <div className="invalid-feedback">{errors.title}</div>
           <textarea
             name="description"
-            className="form-control"
+            className={
+              "form-control mt-2" + (errors.description ? " is-invalid" : "")
+            }
             placeholder="Description..."
             onChange={onChangeDescription}
             value={description}
             style={{ fontFamily: "monospace", resize: "none" }}
           />
-
+          <div className="invalid-feedback">{errors.description}</div>
           <hr />
           {regexFilters}
           <button
@@ -137,6 +147,7 @@ function CreateChallenge(props) {
               regexFilters={stableRegexes}
               targetText={targetText}
               onTargetChange={onTargetChange}
+              errors={errors}
             />
           </div>
           <button type="submit" className="btn btn-warning mt-2">
@@ -154,10 +165,11 @@ CreateChallenge.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  errors: state.challenge.errors
 });
 
 export default connect(
   mapStateToProps,
-  { addChallenge }
+  { addChallenge, clearErrors }
 )(CreateChallenge);
