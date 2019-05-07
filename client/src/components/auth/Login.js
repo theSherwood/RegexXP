@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { loginUser, clearAuthErrors } from "../../actions/authActions";
+import {
+  loginUser,
+  clearAuthErrors,
+  googleOauth,
+  githubOauth
+} from "../../actions/authActions";
 
 function Login(props) {
   const [formData, setFormData] = useState({
@@ -64,6 +69,15 @@ function Login(props) {
           </form>
         </div>
       </div>
+      <button onClick={() => googleOauth()}>Google</button>
+      <button onClick={() => githubOauth()}>Github</button>
+      <a
+        href="https://github.com/login/oauth/authorize?client_id=1e3167ec8e9419c0f467"
+      // target="_blank"
+      // rel="noopener noreferrer"
+      >
+        Github
+      </a>
     </div>
   );
 }
@@ -71,6 +85,7 @@ function Login(props) {
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   clearAuthErrors: PropTypes.func.isRequired
+  // googleOauth: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
