@@ -14,7 +14,7 @@ import {
 } from "./types";
 
 // Add Challenge
-export const addChallenge = challengeData => dispatch => {
+export const addChallenge = (challengeData, history) => dispatch => {
   axios
     .post("/api/challenges", challengeData)
     .then(res => {
@@ -22,6 +22,7 @@ export const addChallenge = challengeData => dispatch => {
         type: ADD_CHALLENGE,
         payload: res.data
       });
+      history.push("/challenges");
     })
     .catch(err =>
       dispatch({

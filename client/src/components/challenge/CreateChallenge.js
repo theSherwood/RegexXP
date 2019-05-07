@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import { addChallenge, clearErrors } from "../../actions/challengeActions";
 
 import sanitizeHTML from "sanitize-html";
@@ -38,7 +39,7 @@ function CreateChallenge(props) {
       description
     };
 
-    props.addChallenge(newChallenge);
+    props.addChallenge(newChallenge, props.history);
   };
 
   const onChangeTitle = e => {
@@ -170,4 +171,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { addChallenge, clearErrors }
-)(CreateChallenge);
+)(withRouter(CreateChallenge));

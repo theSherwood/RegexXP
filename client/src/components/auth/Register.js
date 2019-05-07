@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { registerUser, clearAuthErrors } from "../../actions/authActions";
 
 function Register(props) {
+  const { isAuthenticated, errors } = props.auth;
+
+  if (isAuthenticated) {
+    props.history.push("/challenges");
+  }
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,10 +33,9 @@ function Register(props) {
 
   const onSubmit = e => {
     e.preventDefault();
-    props.registerUser(formData);
+    props.registerUser(formData, props.history);
   };
 
-  const { errors } = props;
   const { email, password, password2, handle } = formData;
   return (
     <div className="card">
@@ -102,10 +108,10 @@ Register.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  errors: state.auth.errors
+  auth: state.auth
 });
 
 export default connect(
   mapStateToProps,
   { registerUser, clearAuthErrors }
-)(Register);
+)(withRouter(Register));

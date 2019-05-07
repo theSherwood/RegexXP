@@ -5,13 +5,13 @@ import jwt_decode from "jwt-decode";
 import { SET_USER, GET_AUTH_ERRORS, CLEAR_AUTH_ERRORS } from "../actions/types";
 
 // Login User
-export const loginUser = userData => dispatch => {
+export const loginUser = (userData, history) => dispatch => {
   axios
     .post("/api/auth/login", userData)
     .then(res => {
       // Save to local storage
       const { token } = res.data;
-      dispatch(handleJWT(token));
+      dispatch(handleJWT(token, history));
     })
     .catch(err => {
       dispatch({
@@ -32,10 +32,10 @@ export const logoutUser = () => dispatch => {
 };
 
 // Register user
-export const registerUser = userData => dispatch => {
+export const registerUser = (userData, history) => dispatch => {
   axios
     .post("/api/auth/register", userData)
-    .then(res => res.json({ success: "true" }))
+    .then(res => history.push("/login"))
     .catch(err =>
       dispatch({
         type: GET_AUTH_ERRORS,
@@ -45,7 +45,8 @@ export const registerUser = userData => dispatch => {
 };
 
 // Handle token and set user
-export const handleJWT = token => dispatch => {
+export const handleJWT = (token, history) => dispatch => {
+  let success = true;
   try {
     // Decode token for user data
     const decodedUser = jwt_decode(token);
@@ -55,11 +56,13 @@ export const handleJWT = token => dispatch => {
     // Set user
     dispatch(setUser(decodedUser));
   } catch (err) {
+    success = false;
     dispatch({
       type: GET_AUTH_ERRORS,
       payload: err.message
     });
   }
+  if (success) history.push("/challenges");
 };
 
 // Set current user

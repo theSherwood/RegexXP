@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import {
-  loginUser,
-  clearAuthErrors,
-  googleOauth,
-  githubOauth
-} from "../../actions/authActions";
+import { withRouter } from "react-router-dom";
+import { loginUser, clearAuthErrors } from "../../actions/authActions";
 
 function Login(props) {
+  const { isAuthenticated, errors } = props.auth;
+
+  if (isAuthenticated) {
+    props.history.push("/challenges");
+  }
+
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -29,11 +31,9 @@ function Login(props) {
 
   const onSubmit = e => {
     e.preventDefault();
-
-    props.loginUser(formData);
+    props.loginUser(formData, props.history);
   };
 
-  const { errors } = props;
   return (
     <div className="card">
       <div className="card-content">
@@ -78,14 +78,13 @@ function Login(props) {
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   clearAuthErrors: PropTypes.func.isRequired
-  // googleOauth: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  errors: state.auth.errors
+  auth: state.auth
 });
 
 export default connect(
   mapStateToProps,
   { loginUser, clearAuthErrors }
-)(Login);
+)(withRouter(Login));
