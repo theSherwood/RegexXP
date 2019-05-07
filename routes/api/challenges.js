@@ -65,7 +65,6 @@ router.post(
         description: req.body.description,
         highlightJSON: req.body.highlightJSON
       });
-      console.log("valid somehow!!!!!!");
       newChallenge
         .save()
         .then(challenge => res.json(challenge))
@@ -100,7 +99,6 @@ router.post(
   "/:id/add-solution",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    console.log("route", req.params.id, req.body);
     Challenge.findById(req.params.id)
       .then(challenge => {
         if (challenge) {

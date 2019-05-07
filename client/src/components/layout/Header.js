@@ -8,7 +8,6 @@ function Header(props) {
   const { auth } = props;
 
   const onLogoutClick = e => {
-    console.log("logout clicked!");
     props.logoutUser();
   };
   return (

@@ -87,7 +87,6 @@ module.exports = passport => {
         proxy: true
       },
       (accessToken, refreshToken, profile, done) => {
-        console.log("here?!!!!");
         const newUser = {
           googleID: profile.id,
           handle: profile.name.givenName || profile.name.familyName,
@@ -120,14 +119,12 @@ module.exports = passport => {
         proxy: true
       },
       (accessToken, refreshToken, profile, done) => {
-        console.log('accessToken', accessToken)
         const newUser = {
           githubId: profile.id,
           handle: profile.displayName || profile.username,
           email: profile._json.email,
           image: profile.photos[0].value
         };
-        console.log('here??????')
         User.findOne({
           githubId: profile.id
         }).then(user => {

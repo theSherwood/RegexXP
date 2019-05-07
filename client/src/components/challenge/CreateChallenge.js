@@ -38,8 +38,6 @@ function CreateChallenge(props) {
       description
     };
 
-    console.log(newChallenge);
-
     props.addChallenge(newChallenge);
   };
 
