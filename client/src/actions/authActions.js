@@ -58,9 +58,9 @@ export const handleJWT = token => dispatch => {
     dispatch({
       type: GET_AUTH_ERRORS,
       payload: err.message
-    })
+    });
   }
-}
+};
 
 // Set current user
 export const setUser = data => {
@@ -75,16 +75,4 @@ export const clearAuthErrors = () => dispatch => {
   dispatch({
     type: CLEAR_AUTH_ERRORS
   });
-};
-
-// Google Oauth
-export const googleOauth = () => {
-  console.log("action submitted");
-  axios.get("/auth/google");
-};
-
-// Github Oauth
-export const githubOauth = () => {
-  console.log("action submitted");
-  axios.get("/auth/github")
 };

@@ -69,15 +69,8 @@ function Login(props) {
           </form>
         </div>
       </div>
-      <button onClick={() => googleOauth()}>Google</button>
-      <button onClick={() => githubOauth()}>Github</button>
-      <a
-        href="https://github.com/login/oauth/authorize?client_id=1e3167ec8e9419c0f467"
-      // target="_blank"
-      // rel="noopener noreferrer"
-      >
-        Github
-      </a>
+      <a href={`${window.location.origin}/auth/google`}>Google</a>
+      <a href={`${window.location.origin}/auth/github`}>Github</a>
     </div>
   );
 }
