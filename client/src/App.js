@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import axiosConfigToken from "./helpers/axiosConfigToken";
@@ -8,6 +8,7 @@ import { setUser } from "./actions/authActions";
 
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import HandleJWT from "./components/auth/HandleJWT";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Tester from "./components/tester/Tester";
@@ -15,6 +16,7 @@ import CreateChallenge from "./components/challenge/CreateChallenge";
 import Challenges from "./components/challenge/Challenges";
 import Challenge from "./components/challenge/Challenge";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import NotFound from "./components/routing/NotFound";
 
 import "./App.css";
 
@@ -36,16 +38,20 @@ export default function App() {
         >
           <Header />
           <div className="container mt-2" style={{ flex: "1 0 auto" }}>
-            <Route exact path="/" component={Tester} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/challenges" component={Challenges} />
-            <Route exact path="/challenges/:id" component={Challenge} />
-            <PrivateRoute
-              exact
-              path="/create-challenge"
-              component={CreateChallenge}
-            />
+            <Switch>
+              <Route exact path="/" component={Tester} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/challenges" component={Challenges} />
+              <Route exact path="/challenges/:id" component={Challenge} />
+              <PrivateRoute
+                exact
+                path="/create-challenge"
+                component={CreateChallenge}
+              />
+              <Route exact path='/jwt/:token' component={HandleJWT} />
+              <Route path='/' component={NotFound} />
+            </Switch>
           </div>
           <Footer />
         </div>
