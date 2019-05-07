@@ -11,13 +11,7 @@ export const loginUser = userData => dispatch => {
     .then(res => {
       // Save to local storage
       const { token } = res.data;
-      localStorage.setItem("jwtToken", token);
-      // Configure axios Authorization header
-      axiosConfigToken(token);
-      // Decode token for user data
-      const decodedUser = jwt_decode(token);
-      // Set user
-      dispatch(setUser(decodedUser));
+      dispatch(handleJWT(token));
     })
     .catch(err => {
       dispatch({
@@ -50,6 +44,24 @@ export const registerUser = userData => dispatch => {
     );
 };
 
+// Handle token and set user
+export const handleJWT = token => dispatch => {
+  try {
+    // Decode token for user data
+    const decodedUser = jwt_decode(token);
+    localStorage.setItem("jwtToken", token);
+    // Configure axios Authorization header
+    axiosConfigToken(token);
+    // Set user
+    dispatch(setUser(decodedUser));
+  } catch (err) {
+    dispatch({
+      type: GET_AUTH_ERRORS,
+      payload: err.message
+    })
+  }
+}
+
 // Set current user
 export const setUser = data => {
   return {
@@ -63,4 +75,16 @@ export const clearAuthErrors = () => dispatch => {
   dispatch({
     type: CLEAR_AUTH_ERRORS
   });
+};
+
+// Google Oauth
+export const googleOauth = () => {
+  console.log("action submitted");
+  axios.get("/auth/google");
+};
+
+// Github Oauth
+export const githubOauth = () => {
+  console.log("action submitted");
+  axios.get("/auth/github")
 };
