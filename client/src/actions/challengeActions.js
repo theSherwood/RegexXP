@@ -136,9 +136,9 @@ export const addSolution = (challengeId, solution) => dispatch => {
 };
 
 // Add a comment to a challenge
-export const addComment = (challengeId, comment) => dispatch => {
+export const addComment = (challengeId, text) => dispatch => {
   axios
-    .post(`/api/challenges/${challengeId}/add-comment`, comment)
+    .post(`/api/challenges/${challengeId}/add-comment`, { text })
     .then(res =>
       dispatch({
         type: ADD_COMMENT,

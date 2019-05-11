@@ -2,14 +2,11 @@ import React, { Fragment } from "react";
 
 export default function Comments(props) {
   const { comments } = props;
+
   return (
     <Fragment>
-      <form className="container">
-        <textarea className="form-control" />
-        <button>Comment</button>
-      </form>
-      {comments.map(comment => (
-        <div className="card mt-2" style={{ fontSize: "12px" }}>
+      {comments.map((comment, i) => (
+        <div key={i} className="card mt-2" style={{ fontSize: "12px" }}>
           <div className="card-content">
             <div className="container p-2">
               <h6>{comment.handle}</h6>

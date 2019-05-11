@@ -182,7 +182,7 @@ router.post(
     Challenge.findById(req.params.id)
       .then(challenge => {
         if (challenge) {
-          // Create solution
+          // Create comment
           new Comment({
             challenge: challenge._id,
             handle: req.user.handle,

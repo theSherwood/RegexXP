@@ -4,10 +4,12 @@ import { connect } from "react-redux";
 import Spinner from "../common/Spinner";
 import Solutions from "./Solutions";
 import Comments from "./Comments";
+import CreateComment from "./CreateComment";
 
 import {
   getCommentsToChallenge,
-  getSolutions
+  getSolutions,
+  addComment
 } from "../../actions/challengeActions";
 
 function Thread(props) {
@@ -15,6 +17,10 @@ function Thread(props) {
   const [showSolutions, setShowSolutions] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [fetching, setFetching] = useState(false);
+
+  const createCommentCallback = text => {
+    props.addComment(challengeId, text);
+  };
 
   const seeComments = () => {
     props.getCommentsToChallenge(challengeId);
@@ -35,12 +41,23 @@ function Thread(props) {
   }, [comments, solutions]);
 
   let contents;
-  if (fetching) {
-    contents = <Spinner size="40vmin" additionalClasses="text-warning" />;
-  } else if (showComments) {
-    contents = <Comments comments={comments} />;
+  if (showComments) {
+    contents = (
+      <Fragment>
+        <CreateComment createCommentCallback={createCommentCallback} />
+        {fetching ? (
+          <Spinner size="20vmin" additionalClasses="text-warning" />
+        ) : (
+          <Comments comments={comments} />
+        )}
+      </Fragment>
+    );
   } else if (showSolutions) {
-    contents = <Solutions solutions={solutions} />;
+    contents = fetching ? (
+      <Spinner size="20vmin" additionalClasses="text-warning" />
+    ) : (
+      <Solutions solutions={solutions} />
+    );
   }
   return (
     <Fragment>
@@ -80,5 +97,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCommentsToChallenge, getSolutions }
+  { getCommentsToChallenge, getSolutions, addComment }
 )(Thread);
