@@ -35,8 +35,8 @@ router.get("/", (req, res) => {
 // @desc    Get a particular challenge by id
 // @access  Public
 router.get("/:id", (req, res) => {
-  // Show solutions (sort by length: -1) and comments
   Challenge.findById(req.params.id)
+    .populate("user", "handle")
     .then(challenge => {
       if (challenge) {
         return res.json(challenge);
