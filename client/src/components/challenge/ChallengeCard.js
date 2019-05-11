@@ -2,10 +2,18 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import HighlightDiv from "../common/HighlightDiv";
+import { setChallenge } from "../../actions/challengeActions";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-export default function ChallengeCard(props) {
+function ChallengeCard(props) {
   const { highlightJSON, description, title, user, _id } = props.challenge;
   const [highlightArray] = useState(JSON.parse(highlightJSON));
+
+  const handleButtonClick = () => {
+    props.setChallenge(props.challenge);
+    props.history.push(`/challenges/${_id}`);
+  };
 
   return (
     <div className="card mb-2">
@@ -13,12 +21,13 @@ export default function ChallengeCard(props) {
         <div className="container p-4" style={{ fontFamily: "monospace" }}>
           <div className="clearfix">
             <h4 className="float-left">{title}</h4>
-            <Link
+            <button
               className="float-right btn btn-warning btn-sm"
-              to={`/challenges/${_id}`}
+              type="button"
+              onClick={handleButtonClick}
             >
               Attempt
-            </Link>
+            </button>
           </div>
           <p className="lead">{user.handle}</p>
           <p className="text-muted">{description}</p>
@@ -43,3 +52,8 @@ export default function ChallengeCard(props) {
 ChallengeCard.propTypes = {
   challenge: PropTypes.object.isRequired
 };
+
+export default connect(
+  null,
+  { setChallenge }
+)(withRouter(ChallengeCard));

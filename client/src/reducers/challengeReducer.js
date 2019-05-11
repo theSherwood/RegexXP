@@ -4,10 +4,12 @@ import {
   CLEAR_ERRORS,
   GET_CHALLENGES,
   GET_CHALLENGE,
+  SET_CURRENT_CHALLENGE,
   IS_LOADING,
   GET_SOLUTIONS,
   GET_COMMENTS_TO_C,
-  ADD_SOLUTION
+  ADD_SOLUTION,
+  ADD_COMMENT
 } from "../actions/types";
 
 const initialState = {
@@ -52,6 +54,11 @@ export default function(state = initialState, action) {
         challenge: payload,
         loading: false
       };
+    case SET_CURRENT_CHALLENGE:
+      return {
+        ...state,
+        challenge: payload
+      };
     case GET_COMMENTS_TO_C:
       return {
         ...state,
@@ -62,6 +69,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         solutions: [payload, ...state.solutions]
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        comments: [payload, ...state.comments]
       };
     case GET_ERRORS:
       return {

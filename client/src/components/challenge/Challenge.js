@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, useMemo, Fragment } from "react";
 import processString from "../../helpers/processString";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -9,19 +9,23 @@ import HighlightDiv from "../common/HighlightDiv";
 import RegexFilter from "../common/RegexFilter";
 import Thread from "../thread/Thread";
 
-import { getChallenge, addSolution } from "../../actions/challengeActions";
+import {
+  getChallenge,
+  addSolution,
+  setChallenge
+} from "../../actions/challengeActions";
 
 function Challenge(props) {
+  const { challenge } = props.challenge;
+  const { highlightJSON, description, title, user, _id } = challenge;
+
   const [regexError, setRegexError] = useState("");
   const [stableRegex, setStableRegex] = useState(["", ""]);
   const [rawRegex, setRawRegex] = useState("");
-  const [targetText, setTargetText] = useState("");
-  const [highlightArray, setHighlightArray] = useState([]);
   const [completed, setCompleted] = useState(false);
-  const [fetching, setFetching] = useState(true);
-
-  const { challenge, loading } = props.challenge;
-  const { highlightJSON, description, title, user, _id } = challenge;
+  const [fetching, setFetching] = useState(
+    props.match.params.id === challenge._id ? false : true
+  );
 
   const onRegexChange = e => {
     setRawRegex(e.target.value);
@@ -43,24 +47,27 @@ function Challenge(props) {
   };
 
   useEffect(() => {
-    props.getChallenge(props.match.params.id);
+    if (fetching) {
+      props.getChallenge(props.match.params.id);
+      setFetching(false);
+    }
+    return () => props.setChallenge({});
   }, []);
 
-  useEffect(() => {
-    if (
-      Object.keys(challenge).length !== 0 &&
-      !loading &&
-      highlightJSON.length > 0
-    ) {
-      const highlightArray = JSON.parse(highlightJSON);
-      setHighlightArray(highlightArray);
+  const highlightArray = useMemo(() => {
+    if (highlightJSON) {
+      return JSON.parse(highlightJSON);
+    }
+  }, [highlightJSON]);
+
+  const targetText = useMemo(() => {
+    if (highlightArray) {
       const challengeTextArray = highlightArray.map(text => {
         return Array.isArray(text) ? text[0] : text;
       });
-      setTargetText(challengeTextArray.join(""));
-      setFetching(false);
+      return challengeTextArray.join("");
     }
-  }, [highlightJSON]);
+  }, [highlightArray]);
 
   const onSubmitSolution = e => {
     e.preventDefault();
@@ -81,9 +88,9 @@ function Challenge(props) {
   };
 
   let challengeContent;
-  if (Object.keys(challenge).length == 0 || (loading && fetching)) {
+  if (Object.keys(challenge).length == 0 || fetching) {
     challengeContent = (
-      <Spinner size="40vmin" additionalClasses="text-warning" />
+      <Spinner size="20vmin" additionalClasses="text-warning" />
     );
   } else {
     let attemptArray = processString({
@@ -108,7 +115,7 @@ function Challenge(props) {
             <p className="lead">{user.handle}</p>
             <p className="text-muted">{description}</p>
             {completed ? (
-              <p className="mt-5">Successfully Completed</p>
+              <p className="text-center">Successfully Completed</p>
             ) : (
               <form onSubmit={onSubmitSolution}>
                 <RegexFilter
@@ -167,6 +174,7 @@ function Challenge(props) {
 
 Challenge.propTypes = {
   getChallenge: PropTypes.func.isRequired,
+  setChallenge: PropTypes.func.isRequired,
   addSolution: PropTypes.func.isRequired,
   challenge: PropTypes.object.isRequired,
   loading: PropTypes.bool
@@ -174,10 +182,10 @@ Challenge.propTypes = {
 
 const mapStateToProps = state => ({
   challenge: state.challenge,
-  laoding: state.loading
+  loading: state.loading
 });
 
 export default connect(
   mapStateToProps,
-  { getChallenge, addSolution }
+  { getChallenge, addSolution, setChallenge }
 )(Challenge);

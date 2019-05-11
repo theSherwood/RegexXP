@@ -6,11 +6,13 @@ import {
   CLEAR_ERRORS,
   GET_CHALLENGES,
   GET_CHALLENGE,
+  SET_CURRENT_CHALLENGE,
   GET_COMMENTS_TO_C,
   GET_COMMENTS_TO_S,
   IS_LOADING,
   GET_SOLUTIONS,
-  ADD_SOLUTION
+  ADD_SOLUTION,
+  ADD_COMMENT
 } from "./types";
 
 // Add Challenge
@@ -53,7 +55,6 @@ export const getChallenges = () => dispatch => {
 
 // Get challenge by id
 export const getChallenge = challengeId => dispatch => {
-  dispatch(setLoading());
   axios
     .get(`/api/challenges/${challengeId}`)
     .then(res =>
@@ -68,6 +69,14 @@ export const getChallenge = challengeId => dispatch => {
         payload: err.response.data
       })
     );
+};
+
+// Set challenge from the one of the current list of challenges
+export const setChallenge = challenge => dispatch => {
+  dispatch({
+    type: SET_CURRENT_CHALLENGE,
+    payload: challenge
+  });
 };
 
 // Get solutions to a challenge
@@ -115,6 +124,24 @@ export const addSolution = (challengeId, solution) => dispatch => {
     .then(res =>
       dispatch({
         type: ADD_SOLUTION,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Add a comment to a challenge
+export const addComment = (challengeId, comment) => dispatch => {
+  axios
+    .post(`/api/challenges/${challengeId}/add-comment`, comment)
+    .then(res =>
+      dispatch({
+        type: ADD_COMMENT,
         payload: res.data
       })
     )

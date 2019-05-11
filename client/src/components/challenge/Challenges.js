@@ -15,7 +15,7 @@ function Challenges(props) {
   let challengesContent;
   if (challenges === null || loading) {
     challengesContent = (
-      <Spinner size="40vmin" additionalClasses="text-warning" />
+      <Spinner size="20vmin" additionalClasses="text-warning" />
     );
   } else {
     challengesContent = challenges.map((challenge, index) => (
