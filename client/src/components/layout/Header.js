@@ -28,9 +28,9 @@ function Header(props) {
       </Link>
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav">
-          <li className="nav-item active">
+          <li className="nav-item">
             <Link className="nav-link" to="/">
-              Home <span className="sr-only">(current)</span>
+              Home
             </Link>
           </li>
           <li className="nav-item">
