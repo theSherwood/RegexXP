@@ -27,57 +27,6 @@ module.exports = passport => {
     })
   );
 
-  // module.exports = function (passport) {
-  //   passport.use(new LocalStrategy({ usernameField: 'email' }, (req, email, password, done) => {
-  //     // Match user
-  //     User.findOne({
-  //       email: email
-  //     }).then(user => {
-  //       if (!user) {
-  //         return done(null, false, { message: 'No User Found' });
-  //       }
-  //       // Match password
-  //       bcrypt.compare(password, user.password, (err, isMatch) => {
-  //         if (err) throw err;
-  //         if (isMatch) {
-  //           return done(null, user);
-  //         } else {
-  //           return done(null, false, { message: 'Password Incorrect' });
-  //         }
-  //       })
-  //     })
-
-  //   // const errors = {};
-
-  //   // const email = req.body.email;
-  //   // const password = req.body.password;
-
-  //   // // Find user
-  //   // User.findOne({ email }).then(user => {
-  //   //   if (!user) {
-  //   //     errors.email =
-  //   //       "That email/password combination doesn't match our records";
-  //   //     return res.status(404).json(errors);
-  //   //   }
-  //   //   // Check password
-  //   //   bcrypt.compare(password, user.password).then(isMatch => {
-  //   //     if (isMatch) {
-  //   //       const payload = {
-  //   //         id: user.id,
-  //   //         email: user.email,
-  //   //         displayName: user.displayName
-  //   //       };
-  //   //       return res.json(payload);
-  //   //     } else {
-  //   //       errors.email =
-  //   //         "That email/password combination doesn't match our records";
-  //   //       return res.status(404).json(errors);
-  //   //     }
-  //   //   });
-  //   // });
-
-  //   }));
-
   passport.use(
     new GoogleStrategy(
       {
@@ -93,7 +42,6 @@ module.exports = passport => {
           email: profile.emails[0].value,
           image: profile.photos[0].value
         };
-
         // Check for existing user
         User.findOne({
           googleID: profile.id

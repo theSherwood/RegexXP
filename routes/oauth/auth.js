@@ -14,8 +14,9 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/auth" }),
   (req, res) => {
-    const { googleID, handle, email } = req.user;
+    const { googleID, handle, email, id } = req.user;
     const payload = {
+      id,
       googleID,
       handle,
       email
@@ -41,8 +42,9 @@ router.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/auth" }),
   function(req, res) {
-    const { githubId, handle, email } = req.user;
+    const { githubId, handle, email, id } = req.user;
     const payload = {
+      id,
       githubId,
       handle,
       email

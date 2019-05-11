@@ -49,8 +49,8 @@ export default function App() {
                 path="/create-challenge"
                 component={CreateChallenge}
               />
-              <Route exact path='/jwt/:token' component={HandleJWT} />
-              <Route path='/' component={NotFound} />
+              <Route exact path="/jwt/:token" component={HandleJWT} />
+              <Route path="/" component={NotFound} />
             </Switch>
           </div>
           <Footer />

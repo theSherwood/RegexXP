@@ -48,6 +48,10 @@ export const registerUser = (userData, history) => dispatch => {
 export const handleJWT = (token, history) => dispatch => {
   let success = true;
   try {
+    // Add 'Bearer' to tokens from Oauth process
+    if (!token.startsWith("Bearer ")) {
+      token = "Bearer " + token;
+    }
     // Decode token for user data
     const decodedUser = jwt_decode(token);
     localStorage.setItem("jwtToken", token);
@@ -62,6 +66,7 @@ export const handleJWT = (token, history) => dispatch => {
       payload: err.message
     });
   }
+  // Redirect to challenges
   if (success) history.push("/challenges");
 };
 
