@@ -92,7 +92,7 @@ function Register(props) {
               />
               <div className="invalid-feedback">{errors.password2}</div>
             </div>
-            <button type="submit" className="btn btn-warning mt-2">
+            <button type="submit" className="btn btn-default mt-2">
               Register
             </button>
           </form>

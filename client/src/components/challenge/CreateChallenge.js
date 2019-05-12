@@ -149,7 +149,7 @@ function CreateChallenge(props) {
               errors={errors}
             />
           </div>
-          <button type="submit" className="btn btn-warning mt-2">
+          <button type="submit" className="btn btn-default mt-2">
             Submit Challenge
           </button>
         </form>

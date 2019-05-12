@@ -16,6 +16,7 @@ import {
 } from "../../actions/challengeActions";
 
 function Challenge(props) {
+  const { isAuthenticated } = props;
   const { challenge } = props.challenge;
   const { highlightJSON, description, title, user, _id } = challenge;
 
@@ -90,7 +91,7 @@ function Challenge(props) {
   let challengeContent;
   if (Object.keys(challenge).length == 0 || fetching) {
     challengeContent = (
-      <Spinner size="20vmin" additionalClasses="text-warning" />
+      <Spinner spinnerStyles={{ width: "20vmin", height: "20vmin" }} />
     );
   } else {
     let attemptArray = processString({
@@ -123,9 +124,9 @@ function Challenge(props) {
                   onChange={onRegexChange}
                   value={rawRegex}
                 />
-                {success ? (
+                {success && isAuthenticated ? (
                   <button
-                    className="float-right btn btn-block btn-sm btn-warning mt-2 mb-2"
+                    className="float-right btn btn-block btn-sm btn-default mt-2 mb-2"
                     type="submit"
                   >
                     Submit solution
@@ -155,11 +156,18 @@ function Challenge(props) {
 
   return (
     <Fragment>
-      <Link className="btn btn-warning btn-sm" to={"/challenges"}>
+      <Link className="btn btn-default btn-sm" to={"/challenges"}>
         Back to challenges
       </Link>
       {challengeContent}
-      <Thread challengeId={_id} />
+      {isAuthenticated ? (
+        <Thread challengeId={_id} />
+      ) : (
+        <p className="mt-3 text-muted text-center">
+          <Link to="/login">Login</Link> to submit a solution or to see any
+          available discussion or solutions to this challenge.
+        </p>
+      )}
     </Fragment>
   );
 }
@@ -174,7 +182,8 @@ Challenge.propTypes = {
 
 const mapStateToProps = state => ({
   challenge: state.challenge,
-  loading: state.loading
+  loading: state.loading,
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(

@@ -63,7 +63,7 @@ function Login(props) {
               />
               <div className="invalid-feedback">{errors.password}</div>
             </div>
-            <button type="submit" className="btn btn-warning mt-2">
+            <button type="submit" className="btn btn-default mt-2">
               Login
             </button>
           </form>

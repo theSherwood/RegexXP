@@ -35,9 +35,8 @@ export default function Tester() {
   };
 
   return (
-    <div className="row">
+    <div className="row mt-4">
       <div className="col-md-8 m-auto">
-        <h3>Tester</h3>
         <form>
           <RegexFilter
             error={errors.regexError}

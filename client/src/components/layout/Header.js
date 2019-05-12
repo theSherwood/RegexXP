@@ -11,7 +11,7 @@ function Header(props) {
     props.logoutUser();
   };
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
       <button
         className="navbar-toggler"
         type="button"

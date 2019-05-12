@@ -21,7 +21,7 @@ function ChallengeCard(props) {
           <div className="clearfix">
             <h4 className="float-left">{title}</h4>
             <button
-              className="float-right btn btn-warning btn-sm"
+              className="float-right btn btn-default btn-sm"
               type="button"
               onClick={handleButtonClick}
             >
