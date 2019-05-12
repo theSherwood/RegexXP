@@ -46,7 +46,7 @@ function Thread(props) {
       <Fragment>
         <CreateComment createCommentCallback={createCommentCallback} />
         {fetching ? (
-          <Spinner size="20vmin" additionalClasses="text-warning" />
+          <Spinner spinnerStyles={{ width: "20vmin", height: "20vmin" }} />
         ) : (
           <Comments comments={comments} />
         )}
@@ -54,7 +54,7 @@ function Thread(props) {
     );
   } else if (showSolutions) {
     contents = fetching ? (
-      <Spinner size="20vmin" additionalClasses="text-warning" />
+      <Spinner spinnerStyles={{ width: "20vmin", height: "20vmin" }} />
     ) : (
       <Solutions solutions={solutions} />
     );
@@ -67,8 +67,8 @@ function Thread(props) {
             onClick={seeComments}
             type="button"
             className={
-              "btn btn-secondary btn-sm mt-3 col " +
-              (showComments ? "btn-warning" : "btn-secondary")
+              "btn btn-sm mt-3 col " +
+              (showComments ? "btn-default" : "btn-secondary")
             }
           >
             See comments
@@ -77,8 +77,8 @@ function Thread(props) {
             onClick={seeSolutions}
             type="button"
             className={
-              "btn btn-secondary btn-sm mt-3 col " +
-              (showSolutions ? "btn-warning" : "btn-secondary")
+              "btn btn-sm mt-3 col " +
+              (showSolutions ? "btn-default" : "btn-secondary")
             }
           >
             See solutions
