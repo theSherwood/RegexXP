@@ -11,7 +11,7 @@ import Login from "./components/auth/Login";
 import HandleJWT from "./components/auth/HandleJWT";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
-import Tester from "./components/tester/Tester";
+import Home from "./components/home/Home";
 import CreateChallenge from "./components/challenge/CreateChallenge";
 import Challenges from "./components/challenge/Challenges";
 import Challenge from "./components/challenge/Challenge";
@@ -39,7 +39,7 @@ export default function App() {
           <Header />
           <div className="container mt-2" style={{ flex: "1 0 auto" }}>
             <Switch>
-              <Route exact path="/" component={Tester} />
+              <Route exact path="/" component={Home} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/challenges" component={Challenges} />
