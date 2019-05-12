@@ -1,3 +1,11 @@
+*,
+*:focus,
+*:active,
+*::before,
+*::after {
+  outline: "none";
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -19,6 +27,17 @@ input,
 textarea {
   background: white;
 }
+
+/* button {
+  transition: transform 800ms;
+} */
+
+button:hover {
+  transform: scale(1.05);
+  transition: transform 400ms;
+  z-index: 100;
+}
+
 /* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import HighlightDiv from "../common/HighlightDiv";
 import { setChallenge } from "../../actions/challengeActions";
 import { connect } from "react-redux";
