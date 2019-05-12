@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import HighlightMark from "./HighlightMark";
 
 export default function HighlightDiv(props) {
-  const { highlightArray, highlightColor, position, tall } = props;
+  const { highlightArray, position, tall } = props;
 
   const styles = {
     fontFamily: "monospace",
@@ -21,12 +21,7 @@ export default function HighlightDiv(props) {
 
   const contents = highlightArray.map((text, index) =>
     Array.isArray(text) ? (
-      <HighlightMark
-        key={index}
-        highlightText={text}
-        highlightColor={highlightColor}
-        tall={tall}
-      />
+      <HighlightMark key={index} highlightText={text} tall={tall} />
     ) : (
       text
     )
@@ -41,13 +36,11 @@ export default function HighlightDiv(props) {
 
 HighlightDiv.propTypes = {
   highlightArray: PropTypes.array.isRequired,
-  highlightColor: PropTypes.string.isRequired,
   position: PropTypes.string.isRequired,
   tall: PropTypes.bool.isRequired
 };
 
 HighlightDiv.defaultProps = {
-  highlightColor: "rgba(0,0,0,0.3)",
   position: "relative",
   tall: false
 };

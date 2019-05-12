@@ -143,17 +143,9 @@ function Challenge(props) {
           }}
         >
           <div className="wrapper" style={{ position: "relative" }}>
-            <HighlightDiv
-              highlightColor="#ffc107"
-              highlightArray={highlightArray}
-              tall={true}
-            />
+            <HighlightDiv highlightArray={highlightArray} tall={true} />
             {completed ? null : (
-              <HighlightDiv
-                highlightColor="#ccc"
-                highlightArray={attemptArray}
-                position="absolute"
-              />
+              <HighlightDiv highlightArray={attemptArray} position="absolute" />
             )}
           </div>
         </div>

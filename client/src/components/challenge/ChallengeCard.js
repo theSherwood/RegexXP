@@ -40,10 +40,7 @@ function ChallengeCard(props) {
           maxHeight: "60vh"
         }}
       >
-        <HighlightDiv
-          highlightColor="#ffc107"
-          highlightArray={highlightArray}
-        />
+        <HighlightDiv highlightArray={highlightArray} />
       </div>
     </div>
   );
