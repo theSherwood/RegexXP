@@ -1,15 +1,28 @@
 import React from "react";
+import "./Spinner.css";
 
 export default function Spinner(props) {
-  const { size, additionalClasses } = props;
+  const { spinnerStyles } = props;
+  const styles = {
+    width: "20vmin",
+    height: "20vmin",
+    margin: "auto",
+    marginTop: "2em",
+    ...spinnerStyles
+  };
+
   return (
-    <div className="text-center mt-5">
-      <div
-        className={"spinner-border " + additionalClasses}
-        role="status"
-        style={{ width: size, height: size }}
-      >
-        <span className="sr-only">Loading...</span>
+    <div className="spinner-container" style={styles}>
+      <div>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

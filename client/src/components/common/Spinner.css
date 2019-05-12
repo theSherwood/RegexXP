@@ -1,0 +1,29 @@
+.spinner-container {
+  --size: var(--spinner-size, 5px);
+}
+
+.spinner-container * {
+  box-sizing: border-box;
+  border: var(--size) solid var(--spinner-color, black);
+  border-bottom: var(--size) solid transparent;
+  border-top: var(--size) solid transparent;
+  margin: auto;
+  position: relative;
+  display: grid;
+  place-items: center;
+  animation: container 3s infinite;
+}
+
+.spinner-container * {
+  width: calc(100% - var(--size));
+  height: calc(100% - var(--size));
+}
+
+@keyframes container {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
