@@ -12,11 +12,11 @@
   z-index: -1;
   top: -2px;
   bottom: -2px;
-  background: rgb(0, 0, 0, 0.4);
+  background: var(--highlight-secondary);
 }
 
 .highlight:not(.tall)::before {
   top: 1px;
   bottom: 1px;
-  background: #ffc107;
+  background: var(--highlight-primary);
 }
