@@ -34,10 +34,14 @@ export default function App() {
       <Router>
         <div
           className="App"
-          style={{ height: "100%", display: "flex", flexDirection: "column" }}
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column"
+          }}
         >
           <Header />
-          <div className="container mt-2" style={{ flex: "1 0 auto" }}>
+          <div className="container" style={{ flex: "1 0 auto" }}>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/register" component={Register} />

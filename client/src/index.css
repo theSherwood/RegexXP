@@ -3,10 +3,7 @@
 *:active,
 *::before,
 *::after {
-  outline: "none";
-}
-
-*:not("spinner-border") {
+  outline: none;
   border-radius: 0 !important;
 }
 
