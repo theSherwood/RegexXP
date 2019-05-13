@@ -3,7 +3,7 @@
   z-index: 10;
 }
 
-.highlight::before {
+.highlight::after {
   content: "";
   display: block;
   position: absolute;
@@ -15,8 +15,16 @@
   background: var(--highlight-secondary);
 }
 
-.highlight:not(.tall)::before {
+.highlight:not(.tall)::after {
   top: 1px;
   bottom: 1px;
   background: var(--highlight-primary);
+}
+
+.highlight.wide-right::after {
+  right: 0px;
+}
+
+.highlight.wide-left::after {
+  left: 0px;
 }

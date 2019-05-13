@@ -1,7 +1,5 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, useLayoutEffect, Fragment } from "react";
 import processString from "../../helpers/processString";
-import m from "../../helpers/merge";
-// import rangy from "rangy";
 
 import HighlightMark from "./HighlightMark";
 
@@ -12,12 +10,22 @@ export default function HighlightTextarea(props) {
   const [backdropElement] = useState(React.createRef());
   const [textareaElement] = useState(React.createRef());
 
+  useEffect(() => {
+    window && window.addEventListener("resize", resizeTextarea);
+    return () => {
+      window.removeEventListener("resize", resizeTextarea);
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    resizeTextarea();
+  }, [targetText]);
+
   const onChange = e => {
     onTargetChange(e);
-    setTimeout(resizeTextArea, 0);
   };
 
-  const resizeTextArea = () => {
+  const resizeTextarea = () => {
     textareaElement.current.style.height =
       backdropElement.current.offsetHeight + "px";
   };
@@ -29,6 +37,33 @@ export default function HighlightTextarea(props) {
     )
   })(targetText);
 
+  /*
+  Detect browser. Code from kennebec on stackOverflow.
+  wordBreak: "break-all" is necessary in Firefox but breaking in Chrome.
+  */
+  const browser = (function() {
+    var ua = navigator.userAgent,
+      tem,
+      M =
+        ua.match(
+          /(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i
+        ) || [];
+    if (/trident/i.test(M[1])) {
+      tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+      return "IE " + (tem[1] || "");
+    }
+    if (M[1] === "Chrome") {
+      tem = ua.match(/\b(OPR|Edge?)\/(\d+)/);
+      if (tem != null)
+        return tem
+          .slice(1)
+          .join(" ")
+          .replace("OPR", "Opera")
+          .replace("Edg ", "Edge ");
+    }
+    return M[1].toLowerCase();
+  })();
+
   const textareaStyles = {
     fontFamily: "monospace",
     border: "none",
@@ -36,8 +71,9 @@ export default function HighlightTextarea(props) {
     width: "100%",
     top: "-2px",
     whiteSpace: "pre-wrap",
-    wordWrap: "break-word",
-    wordBreak: "break-all"
+    overflowWrap: "break-word",
+    wordBreak: browser === "chrome" ? "normal" : "break-all",
+    padding: "0"
   };
 
   return (
@@ -64,10 +100,12 @@ export default function HighlightTextarea(props) {
             id="targetTextBackdrop"
             spellCheck="false"
             ref={backdropElement}
-            style={m(textareaStyles, {
+            style={{
+              ...textareaStyles,
               paddingBottom: "80px",
               position: "relative"
-            })}
+              //color: transparent
+            }}
           >
             {backdropContent}
           </div>
@@ -79,13 +117,13 @@ export default function HighlightTextarea(props) {
             spellCheck="false"
             placeholder="Enter target text..."
             ref={textareaElement}
-            style={m(textareaStyles, {
+            style={{
+              ...textareaStyles,
               position: "absolute",
               resize: "none",
               backgroundColor: "transparent",
-              overflowY: "hidden",
-              zIndex: "1000"
-            })}
+              overflowY: "hidden"
+            }}
           />
         </div>
       </div>

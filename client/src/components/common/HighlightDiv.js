@@ -13,6 +13,7 @@ export default function HighlightDiv(props) {
     width: "100%",
     top: "0",
     left: "0",
+    padding: "0",
     whiteSpace: "pre-wrap",
     wordWrap: "break-word",
     wordBreak: "break-all",
@@ -21,7 +22,7 @@ export default function HighlightDiv(props) {
 
   const contents = highlightArray.map((text, index) =>
     Array.isArray(text) ? (
-      <HighlightMark key={index} highlightText={text} tall={tall} />
+      <HighlightMark key={index} highlightText={text.join("")} tall={tall} />
     ) : (
       text
     )
