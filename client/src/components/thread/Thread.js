@@ -45,19 +45,11 @@ function Thread(props) {
     contents = (
       <Fragment>
         <CreateComment createCommentCallback={createCommentCallback} />
-        {fetching ? (
-          <Spinner spinnerStyles={{ width: "20vmin", height: "20vmin" }} />
-        ) : (
-          <Comments comments={comments} />
-        )}
+        {fetching ? <Spinner /> : <Comments comments={comments} />}
       </Fragment>
     );
   } else if (showSolutions) {
-    contents = fetching ? (
-      <Spinner spinnerStyles={{ width: "20vmin", height: "20vmin" }} />
-    ) : (
-      <Solutions solutions={solutions} />
-    );
+    contents = fetching ? <Spinner /> : <Solutions solutions={solutions} />;
   }
   return (
     <Fragment>

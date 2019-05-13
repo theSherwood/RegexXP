@@ -14,9 +14,7 @@ function Challenges(props) {
 
   let challengesContent;
   if (challenges === null || loading) {
-    challengesContent = (
-      <Spinner spinnerStyles={{ width: "20vmin", height: "20vmin" }} />
-    );
+    challengesContent = <Spinner />;
   } else {
     challengesContent = challenges.map((challenge, index) => (
       <ChallengeCard key={index} challenge={challenge} />

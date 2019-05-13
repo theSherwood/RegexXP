@@ -90,9 +90,7 @@ function Challenge(props) {
 
   let challengeContent;
   if (Object.keys(challenge).length == 0 || fetching) {
-    challengeContent = (
-      <Spinner spinnerStyles={{ width: "20vmin", height: "20vmin" }} />
-    );
+    challengeContent = <Spinner />;
   } else {
     let attemptArray = processString({
       regexes: [new RegExp(stableRegex[0], stableRegex[1])],

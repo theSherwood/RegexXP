@@ -4,10 +4,11 @@ import "./Spinner.css";
 export default function Spinner(props) {
   const { spinnerStyles } = props;
   const styles = {
-    width: "20vmin",
-    height: "20vmin",
+    width: "100px",
+    height: "70px",
     margin: "auto",
-    marginTop: "2em",
+    marginTop: "40px",
+    marginBottom: "40px",
     ...spinnerStyles
   };
 
@@ -17,9 +18,7 @@ export default function Spinner(props) {
         <div>
           <div>
             <div>
-              <div>
-                <div />
-              </div>
+              <div />
             </div>
           </div>
         </div>

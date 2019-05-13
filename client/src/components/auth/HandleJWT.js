@@ -13,7 +13,7 @@ const HandleJWT = props => {
   } else if (props.auth.isAuthenticated) {
     props.history.push("/challenges");
   }
-  return <Spinner spinnerStyles={{ width: "20vmin", height: "20vmin" }} />;
+  return <Spinner />;
 };
 
 HandleJWT.propTypes = {
