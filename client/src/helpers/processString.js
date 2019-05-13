@@ -24,6 +24,10 @@ function processString(options) {
     let index = 0;
 
     if ((result = input.match(regex)) !== null) {
+      if (!regex.global) {
+        // Match only the whole regex, not individual capture groups
+        result = result.slice(0, 1);
+      }
       if (result.length > input.length) {
         outputs.push(input.split(""));
         return;
