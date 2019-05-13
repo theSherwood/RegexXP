@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import formatDate from "../../helpers/formatDate";
 
 export default function Solutions(props) {
   const { solutions } = props;
@@ -9,9 +10,9 @@ export default function Solutions(props) {
           <div key={i} className="card mt-2" style={{ fontSize: "12px" }}>
             <div className="card-content">
               <div className="container p-2">
-                <h5>{solution.regex}</h5>
-                <p className="lead">{solution.handle}</p>
-                <p className="text-muted">{solution.date}</p>
+                <h6>{solution.handle}</h6>
+                <p className="text-muted">{formatDate(solution.date)}</p>
+                <p className="lead">{solution.regex}</p>
               </div>
             </div>
           </div>

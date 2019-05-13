@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import formatDate from "../../helpers/formatDate";
 
 export default function Comments(props) {
   const { comments } = props;
@@ -10,9 +11,9 @@ export default function Comments(props) {
           <div key={i} className="card mt-2" style={{ fontSize: "12px" }}>
             <div className="card-content">
               <div className="container p-2">
-                <h6>{comment.handle}</h6>
+                <p className="mb-0">{comment.handle}</p>
+                <p className="text-muted">{formatDate(comment.date)}</p>
                 <p className="lead">{comment.text}</p>
-                <p className="text-muted">{comment.date}</p>
               </div>
             </div>
           </div>
