@@ -60,13 +60,13 @@ app.use("/auth", oauth);
 // Serve static assets in production
 if (process.env.NODE_ENV === "production") {
   // Redirect to https
-  app.use("*", (req, res, next) => {
-    if (req.headers["x-forwarded-proto"] === "https") {
-      // OK, continue
-      return next();
-    }
-    res.redirect("https://" + req.hostname + req.url);
-  });
+  // app.use("*", (req, res, next) => {
+  //   if (req.headers["x-forwarded-proto"] === "https") {
+  //     // OK, continue
+  //     return next();
+  //   }
+  //   res.redirect("https://" + req.hostname + req.url);
+  // });
 
   // Set static folder
   app.use(express.static("client/build"));
@@ -75,12 +75,6 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
-
-// app.all("*", function(req, res, next) {
-//   if (req.headers["x-forwarded-proto"] != "https")
-//     res.redirect("https://" + req.headers.host + req.url);
-//   else next(); /* Continue to other routes if we're not redirecting */
-// });
 
 const port = process.env.PORT || 5000;
 
