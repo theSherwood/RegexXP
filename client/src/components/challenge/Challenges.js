@@ -8,7 +8,6 @@ import { getChallenges } from "../../actions/challengeActions";
 
 function Challenges(props) {
   const { challenges, loading } = props.challenge;
-  const [transition, setTransition] = useState(true);
 
   useEffect(() => {
     props.getChallenges();
@@ -17,12 +16,7 @@ function Challenges(props) {
   let challengesContent;
   if (challenges === null || loading) {
     challengesContent = (
-      <CSSTransition
-        in={true}
-        appear={true}
-        timeout={1000}
-        classNames="spinner"
-      >
+      <CSSTransition in={true} appear={true} timeout={300} classNames="spinner">
         <Spinner />
       </CSSTransition>
     );

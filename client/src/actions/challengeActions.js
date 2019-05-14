@@ -38,12 +38,12 @@ export const getChallenges = () => dispatch => {
   dispatch(setLoading());
   axios
     .get("/api/challenges")
-    .then(res =>
+    .then(res => {
       dispatch({
         type: GET_CHALLENGES,
         payload: res.data
-      })
-    )
+      });
+    })
     .catch(err =>
       dispatch({
         type: GET_ERRORS,

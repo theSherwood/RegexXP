@@ -59,14 +59,7 @@ footer {
   color: var(--light);
 }
 
-.navbar-dark .nav-link.nav-link {
-  padding: "25px";
-  margin: "10px";
-  width: max-content;
-}
-
-.navbar-dark .nav-item.nav-item:hover {
-  padding: "50px";
+.navbar-dark .nav-link.nav-link:hover {
   color: white;
   background: black;
 }

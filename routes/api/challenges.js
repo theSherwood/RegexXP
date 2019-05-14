@@ -27,7 +27,9 @@ router.get("/", (req, res) => {
   Challenge.find()
     .sort(req.body.sortBy || { date: -1 })
     .populate("user", "handle")
-    .then(challenges => res.json(challenges))
+    .then(challenges => {
+      return res.json(challenges);
+    })
     .catch(err => res.status(404).json(err));
 });
 
