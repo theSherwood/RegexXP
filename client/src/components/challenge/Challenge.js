@@ -121,6 +121,7 @@ function Challenge(props) {
                   error={regexError}
                   onChange={onRegexChange}
                   value={rawRegex}
+                  index=""
                 />
                 {success && isAuthenticated ? (
                   <button

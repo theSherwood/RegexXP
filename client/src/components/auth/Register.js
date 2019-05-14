@@ -45,6 +45,7 @@ function Register(props) {
             <div className="form-group">
               <label htmlFor="handle">Display Name/Handle</label>
               <input
+                aria-label="handle"
                 name="handle"
                 type="text"
                 className={
@@ -58,6 +59,7 @@ function Register(props) {
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
+                aria-label="email"
                 name="email"
                 type="email"
                 className={"form-control" + (errors.email ? " is-invalid" : "")}
@@ -69,6 +71,7 @@ function Register(props) {
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <input
+                aria-label="password"
                 name="password"
                 type="password"
                 className={
@@ -82,6 +85,7 @@ function Register(props) {
             <div className="form-group">
               <label htmlFor="password2">Confirm Password</label>
               <input
+                aria-label="confirm password"
                 name="password2"
                 type="password"
                 className={

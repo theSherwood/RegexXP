@@ -5,6 +5,7 @@ export default function RegexFilter(props) {
   return (
     <div className="input-group mb-1">
       <input
+        aria-label="regular expression"
         className={"form-control " + (error ? "is-invalid" : "")}
         name={`regexInput ${index}`}
         placeholder="Enter regex here..."

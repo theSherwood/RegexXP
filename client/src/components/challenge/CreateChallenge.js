@@ -113,6 +113,7 @@ function CreateChallenge(props) {
         <h3>Create Challenge</h3>
         <form onSubmit={onSubmit}>
           <input
+            aria-label="title"
             name="title"
             className={"form-control" + (errors.title ? " is-invalid" : "")}
             placeholder="Challenge title..."
@@ -122,6 +123,7 @@ function CreateChallenge(props) {
           />
           <div className="invalid-feedback">{errors.title}</div>
           <textarea
+            aria-label="description"
             name="description"
             className={
               "form-control mt-2" + (errors.description ? " is-invalid" : "")

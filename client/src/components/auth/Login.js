@@ -42,6 +42,7 @@ function Login(props) {
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
+                aria-label="email"
                 name="email"
                 type="email"
                 className={"form-control" + (errors.email ? " is-invalid" : "")}
@@ -53,6 +54,7 @@ function Login(props) {
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <input
+                aria-label="password"
                 name="password"
                 type="password"
                 className={
