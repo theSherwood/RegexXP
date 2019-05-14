@@ -1,4 +1,5 @@
 const express = require("express");
+const compression = require("compression");
 const path = require("path");
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -36,6 +37,9 @@ app.use(
     saveUninitialized: false
   })
 );
+
+// Compression Middleware
+app.use(compression());
 
 // Body-parser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
