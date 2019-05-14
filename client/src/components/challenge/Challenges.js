@@ -15,29 +15,34 @@ function Challenges(props) {
   }, []);
 
   let challengesContent;
-  // if (challenges === null || loading) {
-  challengesContent = (
-    <CSSTransition in={true} appear={true} timeout={1000} classNames="spinner">
-      <Spinner />
-    </CSSTransition>
-  );
-  // } else {
-  //   challengesContent = (
-  //     <TransitionGroup>
-  //       {challenges.map((challenge, index) => (
-  //         <CSSTransition
-  //           key={index}
-  //           in={true}
-  //           timeout={500}
-  //           appear={true}
-  //           classNames="challenge-card"
-  //         >
-  //           <ChallengeCard challenge={challenge} />
-  //         </CSSTransition>
-  //       ))}
-  //     </TransitionGroup>
-  //   );
-  // }
+  if (challenges === null || loading) {
+    challengesContent = (
+      <CSSTransition
+        in={true}
+        appear={true}
+        timeout={1000}
+        classNames="spinner"
+      >
+        <Spinner />
+      </CSSTransition>
+    );
+  } else {
+    challengesContent = (
+      <TransitionGroup>
+        {challenges.map((challenge, index) => (
+          <CSSTransition
+            key={index}
+            in={true}
+            timeout={500}
+            appear={true}
+            classNames="challenge-card"
+          >
+            <ChallengeCard challenge={challenge} />
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
+    );
+  }
 
   return (
     <div>
