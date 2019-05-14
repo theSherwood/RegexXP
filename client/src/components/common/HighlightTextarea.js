@@ -89,7 +89,7 @@ export default function HighlightTextarea(props) {
         }}
       >
         <div
-          id="targetTextGroup"
+          className="targetTextGroup"
           style={{
             width: "100%",
             minHeight: "100px",
@@ -97,7 +97,7 @@ export default function HighlightTextarea(props) {
           }}
         >
           <div
-            id="targetTextBackdrop"
+            className="targetTextBackdrop"
             spellCheck="false"
             ref={backdropElement}
             style={{
@@ -114,7 +114,7 @@ export default function HighlightTextarea(props) {
             name="targetTextArea"
             onChange={onChange}
             value={targetText}
-            id="targetTextArea"
+            className="targetTextArea"
             spellCheck="false"
             placeholder="Enter target text..."
             ref={textareaElement}

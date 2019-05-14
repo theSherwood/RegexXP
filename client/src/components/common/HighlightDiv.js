@@ -29,7 +29,7 @@ export default function HighlightDiv(props) {
   );
 
   return (
-    <div id="targetTextBackdrop" spellCheck="false" style={styles}>
+    <div className="targetTextBackdrop" spellCheck="false" style={styles}>
       {contents}
     </div>
   );

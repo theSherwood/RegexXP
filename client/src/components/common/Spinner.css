@@ -4,17 +4,16 @@
 
 .spinner-container * {
   box-sizing: border-box;
-  border: var(--size) solid var(--spinner-color, black);
-  border-bottom: var(--size) solid transparent;
-  border-top: var(--size) solid transparent;
+  border-width: var(--size);
+  border-style: solid;
+  border-color: transparent;
+  border-left-color: var(--spinner-color, black);
+  border-right-color: var(--spinner-color, black);
   margin: auto;
   position: relative;
   display: grid;
   place-items: center;
   animation: container 3s infinite;
-}
-
-.spinner-container * {
   width: calc(100% - var(--size));
   height: calc(100% - var(--size));
 }

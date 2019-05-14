@@ -35,23 +35,19 @@ export default function Tester() {
   };
 
   return (
-    <div className="row">
-      <div className="col-md-8 m-auto">
-        <form>
-          <RegexFilter
-            error={errors.regexError}
-            onChange={onRegexChange}
-            value={rawRegex}
-          />
-          <div className="form-group mt-3">
-            <HighlightTextarea
-              regexFilters={[stableRegex]}
-              targetText={targetText}
-              onTargetChange={onTargetChange}
-            />
-          </div>
-        </form>
+    <form>
+      <RegexFilter
+        error={errors.regexError}
+        onChange={onRegexChange}
+        value={rawRegex}
+      />
+      <div className="form-group mt-3">
+        <HighlightTextarea
+          regexFilters={[stableRegex]}
+          targetText={targetText}
+          onTargetChange={onTargetChange}
+        />
       </div>
-    </div>
+    </form>
   );
 }

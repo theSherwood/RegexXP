@@ -25,7 +25,6 @@ export default function HighlightMark(props) {
         </Fragment>
       );
     default:
-      console.log(highlightText);
       return (
         <Fragment>
           <HighlightChar
