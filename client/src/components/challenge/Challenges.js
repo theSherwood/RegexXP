@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ChallengeCard from "./ChallengeCard";
 import Spinner from "../common/Spinner";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { getChallenges } from "../../actions/challengeActions";
 
 function Challenges(props) {
@@ -14,11 +15,27 @@ function Challenges(props) {
 
   let challengesContent;
   if (challenges === null || loading) {
-    challengesContent = <Spinner />;
+    challengesContent = (
+      <CSSTransition in={true} appear={true} timeout={300} classNames="spinner">
+        <Spinner />
+      </CSSTransition>
+    );
   } else {
-    challengesContent = challenges.map((challenge, index) => (
-      <ChallengeCard key={index} challenge={challenge} />
-    ));
+    challengesContent = (
+      <TransitionGroup>
+        {challenges.map((challenge, index) => (
+          <CSSTransition
+            key={index}
+            in={true}
+            timeout={500}
+            appear={true}
+            classNames="challenge-card"
+          >
+            <ChallengeCard challenge={challenge} />
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
+    );
   }
 
   return (
