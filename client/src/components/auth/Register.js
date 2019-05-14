@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { registerUser, clearAuthErrors } from "../../actions/authActions";
 
+import OAuthButtons from "../common/OAuthButtons";
+
 function Register(props) {
   const { isAuthenticated, errors } = props.auth;
 
@@ -38,68 +40,75 @@ function Register(props) {
 
   const { email, password, password2, handle } = formData;
   return (
-    <div className="card">
-      <div className="card-content">
-        <div className="container p-4">
-          <form onSubmit={onSubmit}>
-            <div className="form-group">
-              <label htmlFor="handle">Display Name/Handle</label>
-              <input
-                aria-label="handle"
-                name="handle"
-                type="text"
-                className={
-                  "form-control" + (errors.handle ? " is-invalid" : "")
-                }
-                value={handle}
-                onChange={onChange}
-              />
-              <div className="invalid-feedback">{errors.handle}</div>
+    <div className="row">
+      <div className="col-md-8 m-auto">
+        <div className="card">
+          <div className="card-content">
+            <div className="container p-4">
+              <form onSubmit={onSubmit}>
+                <div className="form-group">
+                  <label htmlFor="handle">Display Name/Handle</label>
+                  <input
+                    aria-label="handle"
+                    name="handle"
+                    type="text"
+                    className={
+                      "form-control" + (errors.handle ? " is-invalid" : "")
+                    }
+                    value={handle}
+                    onChange={onChange}
+                  />
+                  <div className="invalid-feedback">{errors.handle}</div>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    aria-label="email"
+                    name="email"
+                    type="email"
+                    className={
+                      "form-control" + (errors.email ? " is-invalid" : "")
+                    }
+                    value={email}
+                    onChange={onChange}
+                  />
+                  <div className="invalid-feedback">{errors.email}</div>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <input
+                    aria-label="password"
+                    name="password"
+                    type="password"
+                    className={
+                      "form-control" + (errors.password ? " is-invalid" : "")
+                    }
+                    value={password}
+                    onChange={onChange}
+                  />
+                  <div className="invalid-feedback">{errors.password}</div>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password2">Confirm Password</label>
+                  <input
+                    aria-label="confirm password"
+                    name="password2"
+                    type="password"
+                    className={
+                      "form-control" + (errors.password2 ? " is-invalid" : "")
+                    }
+                    value={password2}
+                    onChange={onChange}
+                  />
+                  <div className="invalid-feedback">{errors.password2}</div>
+                </div>
+                <button type="submit" className="btn btn-default mt-2">
+                  Register
+                </button>
+              </form>
             </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                aria-label="email"
-                name="email"
-                type="email"
-                className={"form-control" + (errors.email ? " is-invalid" : "")}
-                value={email}
-                onChange={onChange}
-              />
-              <div className="invalid-feedback">{errors.email}</div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                aria-label="password"
-                name="password"
-                type="password"
-                className={
-                  "form-control" + (errors.password ? " is-invalid" : "")
-                }
-                value={password}
-                onChange={onChange}
-              />
-              <div className="invalid-feedback">{errors.password}</div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="password2">Confirm Password</label>
-              <input
-                aria-label="confirm password"
-                name="password2"
-                type="password"
-                className={
-                  "form-control" + (errors.password2 ? " is-invalid" : "")
-                }
-                value={password2}
-                onChange={onChange}
-              />
-              <div className="invalid-feedback">{errors.password2}</div>
-            </div>
-            <button type="submit" className="btn btn-default mt-2">
-              Register
-            </button>
-          </form>
+          </div>
+          <OAuthButtons />
         </div>
       </div>
     </div>
