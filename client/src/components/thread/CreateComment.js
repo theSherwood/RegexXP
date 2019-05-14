@@ -17,6 +17,7 @@ const CreateComment = props => {
   return (
     <form onSubmit={onSubmitComment} className="container">
       <textarea
+        aria-label="comment"
         className="form-control"
         style={{ resize: "none" }}
         ref={textareaElmnt}

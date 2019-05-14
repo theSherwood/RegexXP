@@ -110,6 +110,7 @@ export default function HighlightTextarea(props) {
             {backdropContent}
           </div>
           <textarea
+            aria-label="target text"
             name="targetTextArea"
             onChange={onChange}
             value={targetText}
