@@ -4,12 +4,15 @@
 *::before,
 *::after {
   outline: none;
-  border-radius: 0 !important;
+}
+
+*:not(.round) {
+  border-radius: 0px !important;
 }
 
 :root {
   --primary: #ffc107;
-  --secondary: #a04365;
+  --secondary: #ffc107;
   --light: rgb(254, 254, 254);
   --dark: #343a40;
   --muted: #676778;
@@ -42,10 +45,30 @@ textarea {
   background: white;
 }
 
+.navbar-brand::before,
+.navbar-brand::after {
+  content: "/";
+  color: var(--primary);
+  font-weight: bolder;
+  font-size: 1.1em;
+}
+
 .navbar-dark .navbar-brand,
 .navbar-dark .nav-link.nav-link,
 footer {
   color: var(--light);
+}
+
+.navbar-dark .nav-link.nav-link {
+  padding: "25px";
+  margin: "10px";
+  width: max-content;
+}
+
+.navbar-dark .nav-item.nav-item:hover {
+  padding: "50px";
+  color: white;
+  background: black;
 }
 
 .btn.btn-default {
@@ -67,4 +90,12 @@ a:hover,
 a:active,
 a:focus {
   color: var(--secondary);
+}
+
+nav.navbar {
+  border-bottom: solid 4px var(--primary);
+}
+
+a:hover {
+  text-decoration: none;
 }
