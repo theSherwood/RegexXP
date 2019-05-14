@@ -6,21 +6,6 @@
   transition: opacity 300ms;
 }
 
-/* .spinner-enter {
-  opacity: 0;
-}
-.spinner-enter-active {
-  opacity: 1;
-  transition: opacity 500ms;
-}
-.spinner-exit {
-  opacity: 1;
-}
-.spinner-exit-active {
-  opacity: 0;
-  transition: opacity 500ms;
-} */
-
 .challenge-card-appear {
   opacity: 0;
   transform: scale(1, 0);
