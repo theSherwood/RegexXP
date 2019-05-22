@@ -10,6 +10,7 @@ function Header(props) {
   const onLogoutClick = e => {
     props.logoutUser();
   };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
       <button
@@ -48,6 +49,11 @@ function Header(props) {
               <li className="nav-item">
                 <Link className="nav-link" to="/create-challenge">
                   Create Challenge
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to={`/user/${auth.user.id}`}>
+                  Profile
                 </Link>
               </li>
               <li className="nav-item">

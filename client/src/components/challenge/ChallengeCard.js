@@ -4,6 +4,7 @@ import HighlightDiv from "../common/HighlightDiv";
 import { setChallenge } from "../../actions/challengeActions";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function ChallengeCard(props) {
   const { highlightJSON, description, title, user, _id } = props.challenge;
@@ -44,9 +45,10 @@ function ChallengeCard(props) {
             >
               <b>Attempt</b>
             </button>
-            {/* </div> */}
           </div>
-          <p className="lead mb-1">{user.handle}</p>
+          <p className="lead mb-1">
+            <Link to={`/user/${user._id}`}>{user.handle}</Link>
+          </p>
           <p className="text-muted mb-0">{description}</p>
         </div>
       </div>
