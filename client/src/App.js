@@ -38,17 +38,10 @@ export default function App() {
             minHeight: "100vh",
             position: "relative",
             paddingBottom: "100px"
-            // height: "100%",
-            // display: "flex",
-            // flexDirection: "column"
           }}
         >
           <Header />
-          <div
-            className="container"
-            // style={{ flex: "1 0 auto" }}
-            // style={{ marginBottom: "50px" }}
-          >
+          <div className="container">
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/register" component={Register} />
