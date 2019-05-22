@@ -109,7 +109,7 @@ function Challenge(props) {
       <div className="card mt-2">
         <div className="card-content">
           <div className="container p-4" style={{ fontFamily: "monospace" }}>
-            <h4>{title}</h4>
+            <h4 className="page-title mb-4">{title}</h4>
 
             <p className="lead">{user.handle}</p>
             <p className="text-muted">{description}</p>
@@ -136,7 +136,7 @@ function Challenge(props) {
           </div>
         </div>
         <div
-          className="container mt-1 mb-3"
+          className="container mb-2 pt-3 pl-4 pr-4 pb-4"
           style={{
             overflowY: "auto",
             maxHeight: "80vh"

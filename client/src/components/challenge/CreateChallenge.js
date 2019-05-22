@@ -110,7 +110,7 @@ function CreateChallenge(props) {
   return (
     <div className="row">
       <div className="col-lg-8 m-auto">
-        <h3>Create Challenge</h3>
+        <h3 className="page-title mb-4">Create Challenge</h3>
         <form onSubmit={onSubmit}>
           <input
             aria-label="title"

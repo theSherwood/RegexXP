@@ -45,7 +45,7 @@ function Challenges(props) {
 
   return (
     <div>
-      <h3>Challenges</h3>
+      <h3 className="page-title mb-4">Challenges</h3>
       <Search />
       {challengesContent}
     </div>
