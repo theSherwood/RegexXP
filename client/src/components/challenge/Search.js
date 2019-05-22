@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { getChallengesByQuery } from "../../actions/challengeActions";
+import {
+  getChallengesByQuery,
+  getChallenges
+} from "../../actions/challengeActions";
 
 const Search = props => {
   const [queryString, setQueryString] = useState("");
@@ -12,7 +15,11 @@ const Search = props => {
   const submitSearch = e => {
     e.preventDefault();
     const query = queryString.trim();
-    if (query) props.getChallengesByQuery(queryString);
+    if (query) {
+      props.getChallengesByQuery(queryString);
+    } else {
+      props.getChallenges();
+    }
   };
 
   return (
@@ -21,15 +28,15 @@ const Search = props => {
         <div className="input-group mb-3">
           <input
             aria-label="search"
-            className="form-control"
+            className="form-control search-bar"
             placeholder="Search by keyword..."
             value={queryString}
             onChange={handleInputChange}
           />
           <button
             type="submit"
-            className="btn"
-            style={{ background: "black", color: "#ffc107" }}
+            className="btn btn-default"
+            style={{ color: "white" }}
           >
             <b>Search</b>
           </button>
@@ -41,5 +48,5 @@ const Search = props => {
 
 export default connect(
   null,
-  { getChallengesByQuery }
+  { getChallengesByQuery, getChallenges }
 )(Search);
