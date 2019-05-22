@@ -65,6 +65,10 @@ footer {
   background: black;
 }
 
+.navbar-dark .navbar-nav .nav-link:focus {
+  color: var(--primary);
+}
+
 .btn.btn-default {
   background: var(--primary);
 }
