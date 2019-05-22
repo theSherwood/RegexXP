@@ -33,6 +33,20 @@ router.get("/", (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
+// @route   POST api/challenges
+// @desc    Get challenges as results of text search
+// @access  Public
+router.post("/", (req, res) => {
+  Challenge.find(
+    { $text: { $search: req.body.query } },
+    { score: { $meta: "textScore" } }
+  )
+    .sort({ score: { $meta: "textScore" } })
+    .populate("user", "handle")
+    .then(challenges => res.json(challenges))
+    .catch(err => res.status(404).json(err));
+});
+
 // @route   GET api/challenges/:id
 // @desc    Get a particular challenge by id
 // @access  Public

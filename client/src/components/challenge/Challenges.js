@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ChallengeCard from "./ChallengeCard";
 import Spinner from "../common/Spinner";
+import Search from "./Search";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { getChallenges } from "../../actions/challengeActions";
 
@@ -41,6 +42,7 @@ function Challenges(props) {
   return (
     <div>
       <h3>Challenges</h3>
+      <Search />
       {challengesContent}
     </div>
   );

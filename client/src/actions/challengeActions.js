@@ -52,6 +52,27 @@ export const getChallenges = () => dispatch => {
     );
 };
 
+// Get Challenges by query string
+export const getChallengesByQuery = query => dispatch => {
+  dispatch(setLoading());
+  axios
+    .post("/api/challenges", { query })
+    .then(res => {
+      console.log(res.data);
+      dispatch({
+        type: GET_CHALLENGES,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
 // Get challenge by id
 export const getChallenge = challengeId => dispatch => {
   axios
