@@ -9,16 +9,32 @@ const Search = props => {
     setQueryString(e.target.value);
   };
 
-  const submitSearch = () => {
-    props.getChallengesByQuery(queryString);
+  const submitSearch = e => {
+    e.preventDefault();
+    const query = queryString.trim();
+    if (query) props.getChallengesByQuery(queryString);
   };
 
   return (
     <div>
-      <input value={queryString} onChange={handleInputChange} />
-      <button className="btn btn-warning" onClick={submitSearch}>
-        Search
-      </button>
+      <form onSubmit={submitSearch}>
+        <div className="input-group mb-3">
+          <input
+            aria-label="search"
+            className="form-control"
+            placeholder="Search by keyword..."
+            value={queryString}
+            onChange={handleInputChange}
+          />
+          <button
+            type="submit"
+            className="btn"
+            style={{ background: "black", color: "#ffc107" }}
+          >
+            <b>Search</b>
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
