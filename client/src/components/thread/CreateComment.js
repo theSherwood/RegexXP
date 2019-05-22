@@ -22,7 +22,7 @@ const CreateComment = props => {
         style={{ resize: "none" }}
         ref={textareaElmnt}
       />
-      <button className="btn btn-default btn-sm">Comment</button>
+      <button className="btn btn-default btn-sm mt-1 mb-2">Comment</button>
     </form>
   );
 };

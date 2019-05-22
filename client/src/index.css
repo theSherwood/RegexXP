@@ -86,7 +86,12 @@ footer {
 .btn:focus,
 .btn:hover {
   box-shadow: none;
-  transform: scale(1.1);
+  transform: scale(1.05);
+}
+
+.btn-wide:focus,
+.btn-wide:hover {
+  transform: scale(1);
 }
 
 a,
@@ -104,6 +109,10 @@ a:hover {
   text-decoration: none;
 }
 
+h4 {
+  font-size: 1.4em;
+}
+
 @media (max-width: 500px) {
   h4 {
     font-size: 1.3em;
@@ -117,4 +126,8 @@ a:hover {
   .text-muted {
     font-size: 95%;
   }
+}
+
+.justified {
+  text-align: justify;
 }

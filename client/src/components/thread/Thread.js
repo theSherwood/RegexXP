@@ -59,7 +59,7 @@ function Thread(props) {
             onClick={seeComments}
             type="button"
             className={
-              "btn btn-sm mt-3 col " +
+              "btn btn-sm mt-3 btn-wide col " +
               (showComments ? "btn-default" : "btn-secondary")
             }
           >
@@ -69,7 +69,7 @@ function Thread(props) {
             onClick={seeSolutions}
             type="button"
             className={
-              "btn btn-sm mt-3 col " +
+              "btn btn-sm mt-3 btn-wide col " +
               (showSolutions ? "btn-default" : "btn-secondary")
             }
           >

@@ -8,12 +8,12 @@ export default function Comments(props) {
     <Fragment>
       {comments.length ? (
         comments.map((comment, i) => (
-          <div key={i} className="card mt-2" style={{ fontSize: "12px" }}>
+          <div key={i} className="card mt-2" style={{ fontSize: ".9em" }}>
             <div className="card-content">
               <div className="container p-2">
                 <p className="mb-0">{comment.handle}</p>
                 <p className="text-muted">{formatDate(comment.date)}</p>
-                <p className="lead">{comment.text}</p>
+                <p className="lead mb-1">{comment.text}</p>
               </div>
             </div>
           </div>
