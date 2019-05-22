@@ -12,6 +12,7 @@ import HandleJWT from "./components/auth/HandleJWT";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Home from "./components/home/Home";
+import About from "./components/home/About";
 import CreateChallenge from "./components/challenge/CreateChallenge";
 import Challenges from "./components/challenge/Challenges";
 import Challenge from "./components/challenge/Challenge";
@@ -44,6 +45,7 @@ export default function App() {
           <div className="container">
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route exact path="/about" component={About} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/challenges" component={Challenges} />
