@@ -24,6 +24,7 @@
 html,
 body {
   color: var(--dark);
+  font-size: 16px;
 }
 
 body {
@@ -75,7 +76,17 @@ footer {
 .form-control:focus {
   border-color: var(--secondary);
   outline: 0;
-  box-shadow: 0 0 0 0.2rem var(--secondary);
+  box-shadow: none;
+}
+
+.btn {
+  transition: transform 200ms ease-out;
+}
+
+.btn:focus,
+.btn:hover {
+  box-shadow: none;
+  transform: scale(1.1);
 }
 
 a,
@@ -91,4 +102,19 @@ nav.navbar {
 
 a:hover {
   text-decoration: none;
+}
+
+@media (max-width: 500px) {
+  h4 {
+    font-size: 1.3em;
+  }
+
+  h3 {
+    font-size: 1.4em;
+  }
+
+  .lead,
+  .text-muted {
+    font-size: 95%;
+  }
 }
