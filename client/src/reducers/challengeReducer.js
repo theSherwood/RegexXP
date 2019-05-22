@@ -9,7 +9,9 @@ import {
   GET_SOLUTIONS,
   GET_COMMENTS_TO_C,
   ADD_SOLUTION,
-  ADD_COMMENT
+  ADD_COMMENT,
+  SET_CHALLENGE_USER,
+  CLEAR_CHALLENGE_USER
 } from "../actions/types";
 
 const initialState = {
@@ -20,6 +22,7 @@ const initialState = {
   comments: [],
   comment: {},
   loading: false,
+  challengeUser: null,
   errors: {}
 };
 
@@ -84,6 +87,20 @@ export default function(state = initialState, action) {
       return {
         ...state,
         errors: {}
+      };
+    case SET_CHALLENGE_USER:
+      return {
+        ...state,
+        challengeUser: { handle: payload.handle, email: payload.email },
+        challenges: payload.challenges,
+        loading: false
+      };
+    case CLEAR_CHALLENGE_USER:
+      console.log("running");
+      return {
+        ...state,
+        challengeUser: null,
+        challenges: []
       };
     default:
       return state;

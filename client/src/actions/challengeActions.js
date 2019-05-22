@@ -11,12 +11,13 @@ import {
   IS_LOADING,
   GET_SOLUTIONS,
   ADD_SOLUTION,
-  ADD_COMMENT
+  ADD_COMMENT,
+  SET_CHALLENGE_USER,
+  CLEAR_CHALLENGE_USER
 } from "./types";
 
 // Add Challenge
 export const addChallenge = (challengeData, history) => dispatch => {
-  console.log(challengeData);
   axios
     .post("/api/challenges", challengeData)
     .then(res => {
@@ -59,19 +60,36 @@ export const getChallengesByQuery = query => dispatch => {
   axios
     .post("/api/challenges/query", { query })
     .then(res => {
-      console.log(res.data);
       dispatch({
         type: GET_CHALLENGES,
         payload: res.data
       });
     })
     .catch(err => {
-      console.log(err);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
       });
     });
+};
+
+// Get Challenges by user
+export const getChallengesByUser = id => dispatch => {
+  dispatch(setLoading());
+  axios
+    .get(`/api/challenges/user/${id}`)
+    .then(res => {
+      dispatch({
+        type: SET_CHALLENGE_USER,
+        payload: res.data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
 };
 
 // Get challenge by id
@@ -184,5 +202,12 @@ export const setLoading = () => {
 export const clearErrors = () => dispatch => {
   dispatch({
     type: CLEAR_ERRORS
+  });
+};
+
+export const clearChallengeUser = () => dispatch => {
+  console.log("actions");
+  dispatch({
+    type: CLEAR_CHALLENGE_USER
   });
 };
