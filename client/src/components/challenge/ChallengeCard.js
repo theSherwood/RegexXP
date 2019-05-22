@@ -15,23 +15,42 @@ function ChallengeCard(props) {
   };
 
   return (
-    <div className="card mb-2">
+    <div className="card mb-2" style={{ position: "relative" }}>
       <div className="card-content">
-        <div className="container p-4" style={{ fontFamily: "monospace" }}>
-          <div className="clearfix">
-            <h4 className="float-left">{title}</h4>
+        <div className="container pt-5 pl-4 pr-4 pb-3">
+          {/* <div className="d-flex justify-content-between"> */}
+          <h4
+            style={{
+              flex: "1 0 20px",
+              border: "solid 1px rgba(0,0,0,.125",
+              padding: "10px",
+              wordBreak: "break-all"
+            }}
+          >
+            {title}
+          </h4>
+          <div>
             <button
-              className="float-right btn btn-default btn-sm"
+              className="btn btn-sm"
               type="button"
               onClick={handleButtonClick}
+              style={{
+                background: "black",
+                color: "#ffc107",
+                position: "absolute",
+                right: "8px",
+                top: "8px"
+              }}
             >
-              Attempt
+              <b>Attempt</b>
             </button>
+            {/* </div> */}
           </div>
-          <p className="lead">{user.handle}</p>
-          <p className="text-muted">{description}</p>
+          <p className="lead mb-1">{user.handle}</p>
+          <p className="text-muted mb-0">{description}</p>
         </div>
       </div>
+      <hr className="mt-0" />
       <div
         className="container mb-3"
         style={{
