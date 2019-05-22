@@ -6,6 +6,7 @@ import axiosConfigToken from "./helpers/axiosConfigToken";
 import jwt_decode from "jwt-decode";
 import { setUser } from "./actions/authActions";
 
+import User from "./components/user/User";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import HandleJWT from "./components/auth/HandleJWT";
@@ -48,6 +49,7 @@ export default function App() {
               <Route exact path="/about" component={About} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/user/:id" component={User} />
               <Route exact path="/challenges" component={Challenges} />
               <Route exact path="/challenges/:id" component={Challenge} />
               <PrivateRoute
