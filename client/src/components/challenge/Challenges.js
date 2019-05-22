@@ -22,7 +22,7 @@ function Challenges(props) {
       </CSSTransition>
     );
   } else {
-    challengesContent = (
+    challengesContent = challenges.length ? (
       <TransitionGroup>
         {challenges.map((challenge, index) => (
           <CSSTransition
@@ -36,6 +36,10 @@ function Challenges(props) {
           </CSSTransition>
         ))}
       </TransitionGroup>
+    ) : (
+      <p>
+        <em>No results found...</em>
+      </p>
     );
   }
 
