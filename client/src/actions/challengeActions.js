@@ -16,6 +16,7 @@ import {
 
 // Add Challenge
 export const addChallenge = (challengeData, history) => dispatch => {
+  console.log(challengeData);
   axios
     .post("/api/challenges", challengeData)
     .then(res => {
@@ -56,7 +57,7 @@ export const getChallenges = () => dispatch => {
 export const getChallengesByQuery = query => dispatch => {
   dispatch(setLoading());
   axios
-    .post("/api/challenges", { query })
+    .post("/api/challenges/query", { query })
     .then(res => {
       console.log(res.data);
       dispatch({

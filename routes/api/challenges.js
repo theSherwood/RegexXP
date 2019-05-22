@@ -33,10 +33,10 @@ router.get("/", (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
-// @route   POST api/challenges
+// @route   POST api/challenges/query
 // @desc    Get challenges as results of text search
 // @access  Public
-router.post("/", (req, res) => {
+router.post("/query", (req, res) => {
   Challenge.find(
     { $text: { $search: req.body.query } },
     { score: { $meta: "textScore" } }
