@@ -7,6 +7,7 @@ const passport = require("passport");
 const validateCreateChallengeInput = require("../../validation/create-challenge");
 
 // Load models
+const User = require("../../models/User");
 const Challenge = require("../../models/Challenge");
 const Comment = require("../../models/Comment");
 const Solution = require("../../models/Solution");
@@ -44,6 +45,30 @@ router.post("/query", (req, res) => {
     .sort({ score: { $meta: "textScore" } })
     .populate("user", "handle")
     .then(challenges => res.json(challenges))
+    .catch(err => res.status(404).json(err));
+});
+
+// @route   GET api/challenges/user/:id
+// @desc    Get challenges created by a user
+// @access  Public
+router.get("/user/:id", (req, res) => {
+  User.findById(req.params.id)
+    .then(user => {
+      if (user) {
+        Challenge.find({ user: user._id })
+          .then(challenges => {
+            const package = {
+              handle: user.handle,
+              email: user.email,
+              challenges
+            };
+            res.json(package);
+          })
+          .catch(err => res.status(404).json(err));
+      } else {
+        return res.json({});
+      }
+    })
     .catch(err => res.status(404).json(err));
 });
 
