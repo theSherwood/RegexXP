@@ -52,10 +52,15 @@ router.post("/query", (req, res) => {
 // @desc    Get challenges created by a user
 // @access  Public
 router.get("/user/:id", (req, res) => {
-  User.findById(req.params.id)
+  // get the tutorial page if navigating to /user/tutorial
+  const id =
+    req.params.id === "tutorial" ? "5ce5e1ea9d67ce2a7eddf348" : req.params.id;
+
+  User.findById(id)
     .then(user => {
       if (user) {
         Challenge.find({ user: user._id })
+          .sort({ date: -1 })
           .then(challenges => {
             const package = {
               handle: user.handle,
