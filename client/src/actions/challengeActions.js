@@ -206,7 +206,6 @@ export const clearErrors = () => dispatch => {
 };
 
 export const clearChallengeUser = () => dispatch => {
-  console.log("actions");
   dispatch({
     type: CLEAR_CHALLENGE_USER
   });
