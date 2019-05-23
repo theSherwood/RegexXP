@@ -30,8 +30,8 @@ function Header(props) {
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <Link className="nav-link" to="/">
-              Home
+            <Link className="nav-link" to="/user/tutorial">
+              Tutorial
             </Link>
           </li>
           <li className="nav-item">
@@ -48,7 +48,7 @@ function Header(props) {
             <Fragment>
               <li className="nav-item">
                 <Link className="nav-link" to="/create-challenge">
-                  Create Challenge
+                  Create
                 </Link>
               </li>
               <li className="nav-item">
