@@ -18,7 +18,7 @@ function ChallengeCard(props) {
   return (
     <div className="card mb-2" style={{ position: "relative" }}>
       <div className="card-content">
-        <div className="container pt-5 pl-4 pr-4 pb-3">
+        <div className="container pt-5 pl-4 pr-4">
           {/* <div className="d-flex justify-content-between"> */}
           <h4
             style={{
@@ -50,17 +50,17 @@ function ChallengeCard(props) {
             <Link to={`/user/${user._id}`}>{user.handle}</Link>
           </p>
           <p className="text-muted mb-0">{description}</p>
+          <hr className="mt-3 mb-3" />
+          <div
+            className="container mb-3"
+            style={{
+              overflowY: "auto",
+              maxHeight: "60vh"
+            }}
+          >
+            <HighlightDiv highlightArray={highlightArray} />
+          </div>
         </div>
-      </div>
-      <hr className="mt-0" />
-      <div
-        className="container mb-3"
-        style={{
-          overflowY: "auto",
-          maxHeight: "60vh"
-        }}
-      >
-        <HighlightDiv highlightArray={highlightArray} />
       </div>
     </div>
   );
