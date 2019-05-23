@@ -96,7 +96,6 @@ export default function(state = initialState, action) {
         loading: false
       };
     case CLEAR_CHALLENGE_USER:
-      console.log("running");
       return {
         ...state,
         challengeUser: null,
