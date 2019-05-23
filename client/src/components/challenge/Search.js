@@ -29,7 +29,7 @@ const Search = props => {
           <input
             aria-label="search"
             className="form-control search-bar"
-            placeholder="Search by keyword..."
+            placeholder="Keyword search..."
             value={queryString}
             onChange={handleInputChange}
           />
