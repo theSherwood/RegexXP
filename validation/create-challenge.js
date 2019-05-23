@@ -37,8 +37,8 @@ module.exports = function validateCreateChallengeInput(data) {
   if (!validator.isLength(data.title, { min: 2, max: 50 })) {
     errors.title = "Title must be between 2 and 50 characters";
   }
-  if (!validator.isLength(data.description, { min: 0, max: 300 })) {
-    errors.description = "Description must be fewer than 300 characters";
+  if (!validator.isLength(data.description, { min: 0, max: 500 })) {
+    errors.description = "Description must be fewer than 500 characters";
   }
   if (!validator.isLength(challengeText, { min: 0, max: 1000 })) {
     errors.challenge = "Challenge text must be fewer than 1000 characters";
