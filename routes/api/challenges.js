@@ -12,11 +12,11 @@ const Challenge = require("../../models/Challenge");
 const Comment = require("../../models/Comment");
 const Solution = require("../../models/Solution");
 
-// @route   GET api/posts/test
-// @desc    Tests posts route
+// @route   GET api/challenges/test
+// @desc    Tests challenges route
 // @access  Public
 router.get("/test", (req, res) => {
-  res.json({
+  return res.json({
     msg: "Challenges Route Works"
   });
 });

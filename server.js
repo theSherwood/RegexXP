@@ -13,6 +13,7 @@ require("./models/User");
 const auth = require("./routes/api/auth");
 const challenges = require("./routes/api/challenges");
 const oauth = require("./routes/oauth/auth");
+const test = require("./routes/api/test");
 
 // Config Environment Vars
 if (process.env.NODE_ENV !== "production") {
@@ -56,6 +57,7 @@ require("./config/passport")(passport);
 app.use("/api/auth", auth);
 app.use("/api/challenges", challenges);
 app.use("/auth", oauth);
+app.use("/api/test", test);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === "production") {
