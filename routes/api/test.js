@@ -3,8 +3,7 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   return res.json({
-    msg: "Route Works",
-    env: process.env
+    msg: "Route Works"
   });
 });
 
