@@ -1,12 +1,25 @@
 {
   "version": 2,
+  "alias": "RegexXp",
+  "name": "RegexXp",
   "builds": [
     {
       "src": "*.js",
       "use": "@now/node-server"
+    },
+    {
+      "src": "./client/build/**",
+      "use": "@now/static"
     }
   ],
   "routes": [
+    {
+      "src": "/static/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
+      "dest": "/client/build/static/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "server.js"
