@@ -30,15 +30,6 @@ mongoose
 
 const app = express();
 
-// Express session Middleware
-app.use(
-  session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false
-  })
-);
-
 // Compression Middleware
 app.use(compression());
 
@@ -71,7 +62,7 @@ if (process.env.NODE_ENV === "production") {
   // });
 
   // Set static folder
-  app.use(express.static("client/build"));
+  app.use(express.static(path.resolve(__dirname, "client", "build")));
   // Send client assets
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
