@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "deploy": "now --public",
+    "deploy": "now --target production",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "client-build": "npm run build --prefix client",
