@@ -27,6 +27,7 @@ function Challenge(props) {
   const [fetching, setFetching] = useState(
     props.match.params.id === challenge._id ? false : true
   );
+  const [success, setSuccess] = useState(false);
 
   const onRegexChange = e => {
     setRawRegex(e.target.value);
@@ -72,8 +73,14 @@ function Challenge(props) {
 
   const onSubmitSolution = e => {
     e.preventDefault();
-    props.addSolution(_id, { regex: rawRegex });
-    setCompleted(true);
+    if (success) {
+      props.addSolution(_id, { regex: rawRegex });
+      setCompleted(true);
+    } else {
+      const tempError = regexError;
+      setRegexError("error");
+      setTimeout(() => setRegexError(tempError), 1000);
+    }
   };
 
   const arraysEqual = (arr1, arr2) => {
@@ -100,9 +107,19 @@ function Challenge(props) {
       attemptArray = [];
     }
 
-    let success = false;
-    if (attemptArray.length > 0 && arraysEqual(attemptArray, highlightArray)) {
-      success = true;
+    if (success) {
+      if (
+        !(attemptArray.length > 0 && arraysEqual(attemptArray, highlightArray))
+      ) {
+        setSuccess(false);
+      }
+    } else {
+      if (
+        attemptArray.length > 0 &&
+        arraysEqual(attemptArray, highlightArray)
+      ) {
+        setSuccess(true);
+      }
     }
 
     challengeContent = (
