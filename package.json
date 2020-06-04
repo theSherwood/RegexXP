@@ -2,6 +2,10 @@
   "name": "regexxp",
   "version": "1.0.0",
   "description": "Gain XP with Regex!",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theSherwood/RegexXP"
+  },
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
